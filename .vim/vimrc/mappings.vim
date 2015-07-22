@@ -106,3 +106,25 @@ if has("mac")
 	imap <D-8> <ESC>8gt
 	imap <D-9> <ESC>9gt
 endif
+
+" bind K to grep word under cursor
+nnoremap \A :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwi
+nnoremap \a :Ag<SPACE>
+
+" Increase and Decrease the splits using shift and direction key.
+nnoremap <S-H> <C-W>>
+nnoremap <S-J> <C-W>-
+nnoremap <S-K> <C-W>+
+nnoremap <S-L> <C-W><
+
+" Set clipboard so can copy.
+set clipboard=unnamed
+vmap <C-c> "+y
+vmap <C-x> "+c
+
+" F1 will map to esc instead of annoying help.
+map <F1> <Esc>
+imap <F1> <Esc>
+

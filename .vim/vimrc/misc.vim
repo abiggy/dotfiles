@@ -12,3 +12,6 @@ autocmd BufReadPost *
 silent execute '!mkdir -p ~/.vim_backups'
 set backupdir=~/.vim_backups/
 set directory=~/.vim_backups/
+
+" Syntax highlighting from start. Slow but better.
+autocmd BufEnter * :syntax sync fromstart

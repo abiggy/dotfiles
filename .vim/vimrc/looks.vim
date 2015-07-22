@@ -46,3 +46,19 @@ if exists('+colorcolumn')
   hi ColorColumn ctermbg=235 guibg=#2C2D27
   set colorcolumn=100
 endif
+
+" Molokai Original
+colorscheme molokai
+"let g:molokai_original = 1
+let g:rehash256 = 1
+
+" Hybrid theme
+"let g:hybrid_use_iTerm_colors = 1
+" colorscheme hybrid
+
+" Vimbrant theme
+"set background=dark
+"colorscheme vimbrant
+"highlight ColorColumn ctermbg=7
+"highlight ColorColumn guibg=Gray
+

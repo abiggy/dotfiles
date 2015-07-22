@@ -5,10 +5,12 @@ set autoread                          " Refresh buffer if file has been changed 
 set autowrite                         " Automatically save before commands like :next
 set backspace=indent,eol,start        " Backspace over everything.
 set cursorline                        " highlight cursor line
+set diffopt+=vertical                 " make gdiff vertical instead of horizontal
 set encoding=utf-8
 set expandtab                         " always uses spaces instead of tab characters
 set foldlevel=20
 set foldmethod=syntax
+set nofoldenable                      " disable folding
 set formatoptions=1
 set hidden                            " Keep buffers around after closing them
 set history=50
@@ -22,6 +24,7 @@ set listchars=tab:\|\ ,trail:•,extends:>,precedes:<,nbsp:+
 set modelines=1
 set mouse=a
 set noequalalways
+set nowrap                            " Stop wrapping goddamnit
 set number
 set pastetoggle=<F7>
 set ruler
@@ -50,5 +53,4 @@ set wildmenu
 set wildmode=list:longest,full        " bash-like command line tab completion
 set winheight=24
 set winwidth=94
-set wrap
 set wrapmargin=2
