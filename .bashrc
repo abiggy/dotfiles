@@ -211,3 +211,7 @@ source "`brew --prefix`/etc/grc.bashrc"
 # ifconfig only active!
 alias ifconfig2="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 
+# cd then ls
+function cdl {
+    builtin cd "$@" && l
+}
