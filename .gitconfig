@@ -3,11 +3,11 @@
 ### the [user] section to your info
 
 [github]
-    user = abiggy
+    user = adam-acl
 
 [user]
     name = Adam Biglow
-    email = adam.biglow@gmail.com
+    email = adam_biglow@acl.com
 
 [core]
     editor = /usr/bin/vim
@@ -103,3 +103,5 @@
 [filter "media"]
     clean = git-media-clean %f
     smudge = git-media-smudge %f
+[credential]
+	helper = osxkeychain
