@@ -24,8 +24,8 @@ Bundle 'kien/ctrlp.vim'
 " -----------------------
 " File explorer within Vim
 Bundle 'scrooloose/nerdtree'
-" Ultimate Vim statusline utility
-Bundle 'Lokaltog/vim-powerline'
+" Ultimate Vim statusline utility airline instead
+"Bundle 'powerline/powerline'
 " Highlights the matching HTML tag
 Bundle 'gregsexton/MatchTag'
 " Rainbow parentheses!! :)
@@ -79,7 +79,8 @@ Bundle 'tpope/vim-haml'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'itspriddle/vim-jquery'
-Bundle 'leshill/vim-json'
+"Bundle 'leshill/vim-json'
+Bundle 'elzr/vim-json'
 Bundle 'tpope/vim-markdown'
 Bundle 'vimoutliner/vimoutliner'
 Bundle 'wannesm/wmgraphviz.vim'
@@ -92,6 +93,8 @@ Bundle 'groenewege/vim-less'
 Bundle 'slim-template/vim-slim'
 Bundle 'klen/python-mode'
 Bundle 'django.vim'
+
+Bundle 'hail2u/vim-css3-syntax'
 
 Bundle 'guns/vim-clojure-static'
 Bundle 'tpope/vim-fireplace'
@@ -122,6 +125,12 @@ Bundle "yearofmoo/Vim-Darkmate"
 Bundle "w0ng/vim-Hybrid"
 " Vimbrant theme'
 Bundle "thayerwilliams/vimbrant"
+"Tomorrow color theme
+Bundle "chriskempson/vim-tomorrow-theme"
+" Airline is status bar uplift
+Bundle 'vim-airline/vim-airline'
+"Airline themes
+Bundle 'vim-airline/vim-airline-themes'
 
 " PHP debugger
 Bundle "joonty/vdebug"
@@ -132,4 +141,31 @@ Bundle "mtth/scratch.vim"
 " Git CodeReview Plugin
 Bundle 'junkblocker/patchreview-vim'
 Bundle 'codegram/vim-codereview'
+
+" ES6
+Bundle 'isRuslan/vim-es6'
+
+" CSS colours
+Bundle 'skammer/vim-css-color'
+
+" TERN
+Bundle 'ternjs/tern_for_vim'
+
+" Sassalinter
+Bundle 'gcorne/vim-sass-lint'
+
+"Nerdtree git tags for files support
+Bundle 'Xuyuanp/nerdtree-git-plugin' 
+" Angular functionality
+Bundle 'burnettk/vim-angular'
+" Node js
+Bundle 'moll/vim-node'
+" Javascript syntax library highlighting
+Bundle 'othree/javascript-libraries-syntax.vim'
+" Javascript parameter completion
+Bundle 'othree/jspc.vim'
+" Expansion of vim's javascript syntax file for HTML5
+Bundle '1995eaton/vim-better-javascript-completion'
+" Additional JS syntax highlighting
+Bundle 'jelera/vim-javascript-syntax'
 

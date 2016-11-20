@@ -13,10 +13,11 @@
     editor = /usr/bin/vim
     excludesfile = ~/.cvsignore
     attributesfile = ~/.gitattributes
+	whitespace = trailing-space,space-before-tab
 
 ### colors are meant for a dark terminal
 [color]
-    ui = auto
+	ui = auto
     diff = auto
     status = auto
     branch = auto
@@ -72,14 +73,15 @@
 [blame]
     date = short
 [diff]
-    renames = true
-    mnemonicprefix = true
+	renames = copies
+	mnemonicprefix = true
     tool = vimdiff
   #external = git_diff_wrapper
 [apply]
     whitespace = strip
 [merge]
     tool = vimdiff
+	stat = true
 [status]
     relativePaths = false
 [web]
@@ -105,3 +107,5 @@
     smudge = git-media-smudge %f
 [credential]
 	helper = osxkeychain
+[init]
+	templatedir = ~/.git_template

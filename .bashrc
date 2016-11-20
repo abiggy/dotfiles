@@ -1,4 +1,6 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
+source ./term/term_common.sh
+source ./term/acl_common.sh
 
 # If not running interactively, don't do anything
 if [ -n "$PS1" ] ; then
@@ -81,13 +83,12 @@ $EMC`date +%D` \t $EMY\$$NONE "
 
 PROMPT_COMMAND=set_prompt
 
-# Alias definitions.
-
 # enable color support of ls
 if [ "$TERM" != "dumb" ]; then
   if [[ "$OSTYPE" =~ "darwin" ]]; then
     alias ls='ls -G'
-    LSCOLORS='gxfxcxdxbxegedabagacad'
+    # LSCOLORS='gxfxcxdxbxegedabagacad'
+    LSCOLORS='ExFxBxDxCxegedabagacad'
   else
     eval "`dircolors -b`"
     alias ls='ls --color=auto'
@@ -100,39 +101,26 @@ alias la='ls -A'
 alias lal='ls -Al'
 alias lla='ls -Al'
 alias l='ls -AlhF'
-alias lx=' LC_ALL=en_US.UTF-8 LANG=en ls++ '
-
-alias ..='cd ..'
-alias b='bundle'
-alias be='bundle exec'
-alias bi='bundle install'
-alias bir='bundle exec rake'
-alias cp='cp -i'
 
 # Git
 alias g='git'
 alias ga='git add'
 alias gc='git commit'
-alias gcam='git commit -am'
-alias gcm='git commit -m'
+alias gcamsg='git commit -am'
+alias gcmsg='git commit -m'
 alias gd='git_diff'
 alias gfo='git fetch origin'
 alias gh='git hist'
 alias gph='git push heroku'
-alias gpo='git push origin'
 alias gr='git rebase'
 alias grm='git rebase master'
 alias grom='git rebase origin/master'
-alias gs='git status'
+alias gst='git status'
 alias gb='git branch'
 alias gd2='git d'
 alias gco='git checkout'
-alias gst="git st"
-alias gbr="git br"
-alias gpull="git pull origin"
-alias gpush="git push origin"
-alias gci="git ci -m"
-alias gcia="git ci -am"
+alias ggl="git pull origin"
+alias gp="git push origin"
 
 alias hdj='heroku run python manage.py'
 alias hr='heroku run'
@@ -140,7 +128,6 @@ type hub &> /dev/null && alias git='hub'
 alias mvimcp='open -a Macvim .'
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias ppjson='python -mjson.tool'
-alias reload='source "$HOME/.bashrc"'
 alias rm='rm -i'
 alias rs='rake spec'
 alias rspec='rspec --color --backtrace --format=documentation'
@@ -148,21 +135,6 @@ alias t='column -t'
 alias tmux='tmux -2'
 alias tunnel='ssh -C2qTnN -D 8080 brandonkliu@brandonkliu.com'
 alias v='source venv/bin/activate'
-alias vi='vim'
-
-alias vimrc='vim ~/.vimrc.local'
-alias vimbash='vim ~/.bash_profile'
-alias vimbashrc='vim ~/.bashrc'
-
-#Spelling mistakes
-alias ivim='vim'
-alias ivm='vim'
-alias cd..='cd ..'
-
-export EDITOR=vim
-export GREP_COLORS=auto # Turn on colors for grep
-export PATH=/usr/local/sbin:/usr/local/bin:~/bin:~/opt/bin:$PATH:~/dotfiles/bin
-export PYTHONSTARTUP=~/.pystartup
 
 if [[ -e ~/.bashrc.local ]]; then
   source ~/.bashrc.local
@@ -182,36 +154,17 @@ function gsl() {
   git log --oneline --color $* | head
 }
 
-function mkcd() {
-  dir="$1"
-  mkdir -p $dir && cd $dir
-}
-
 function dj() {
   python `find-up manage.py` "$@"
 }
 
-fi
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
 # Stuff
-# Better colours
-export LSCOLORS='ExFxBxDxCxegedabagacad'
 set -o vi
-alias refresh='source ~/.bash_profile'
-
-alias grep='egrep'
-alias egrep='egrep --color'
+alias refresh='source "$HOME/.bashrc"'
 
 # Colour?!
 source "`brew --prefix`/etc/grc.bashrc"
+source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
+. `brew --prefix`/etc/profile.d/z.sh
 
-# ifconfig only active!
-alias ifconfig2="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
-
-# cd then ls
-function cdl {
-    builtin cd "$@" && l
-}
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

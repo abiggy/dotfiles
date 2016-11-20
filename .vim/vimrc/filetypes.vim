@@ -4,15 +4,18 @@ au BufNewFile,BufRead *.coffee set ft=coffee
 au BufNewFile,BufRead *.cgi set ft=perl
 au BufNewFile,BufRead *.dot set list smartindent
 au BufNewFile,BufRead Gemfile,*.ru set ft=ruby
-au BufNewFile,BufRead *.js setlocal ts=4 sts=4 sw=4 expandtab
+au BufNewFile,BufRead *.js setlocal ts=2 sts=2 sw=2 expandtab
+au BufNewFile,BufRead *.jsx setlocal ts=2 sts=2 sw=2 expandtab
+au BufNewFile,BufRead *.es6 set ft=javascript ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.md set nolist
 au BufNewFile,BufRead *.ml set tw=0 wrapmargin=0 " No automatic line wrapping
 au BufNewFile,BufRead *.otl set ft=vo_base nolist noexpandtab smartindent tw=100
 au BufNewFile,BufRead *.otl colors vo_dark
-au BufNewFile,BufRead *.php,*.phpt,*.htm,*.html set ts=4 sts=4 sw=4 expandtab
+au BufNewFile,BufRead *.php,*.phpt,*.htm,*.html set ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.phpt set ft=php
 au BufNewFile,BufRead *.py setlocal ts=4 sts=4 sw=4 expandtab
 au BufNewFile,BufRead *.s{a,c}ss syntax cluster sassCssAttributes add=@cssColors
+au BufNewFile,BufRead *.s{a,c}ss setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.slim set ft=slim
 au BufNewFile,BufRead *.sls set ft=yaml
 au BufNewFile,BufRead *.tex set nolist
@@ -30,3 +33,5 @@ autocmd FileType ruby noremap <C-N> :w<CR>:!/usr/bin/env ruby %<CR>
 autocmd FileType ruby noremap <Leader>m :w<CR>:!/usr/bin/env ruby -c %<CR>
 
 let g:haskell_indent_if = 2
+
+let javaScript_fold=1         " JavaScript

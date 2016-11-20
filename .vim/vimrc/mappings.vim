@@ -41,6 +41,9 @@ command! Wq wq
 command! WQ wq
 command! Q q
 
+command! Vsp vsp
+command! Sp sp
+
 " Better scrolling
 noremap <C-Y> 5<C-Y>
 noremap <C-E> 5<C-E>

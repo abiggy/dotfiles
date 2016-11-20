@@ -9,7 +9,8 @@ set diffopt+=vertical                 " make gdiff vertical instead of horizonta
 set encoding=utf-8
 set expandtab                         " always uses spaces instead of tab characters
 set foldlevel=20
-set foldmethod=syntax
+"set foldmethod=Syntax                " makes 7.4 almost unusable slow e.g. for js&ruby files
+set foldmethod=indent                 " Works much better for js files."
 set nofoldenable                      " disable folding
 set formatoptions=1
 set hidden                            " Keep buffers around after closing them
@@ -37,11 +38,11 @@ set showcmd                           " Display incomplete commands
 set showcmd                           " display commands as they are typed
 set smartcase
 set smarttab                          " make 'tab' insert indents instead of tabs at the beginning of a line
-set softtabstop=4                     " a combination of spaces and tabs are used to simulate tab stops at a width other than the (hard)tabstop
+set softtabstop=2                     " a combination of spaces and tabs are used to simulate tab stops at a width other than the (hard)tabstop
 set splitbelow
 set splitright
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P " taken from :help fugitive-statusline
-set tabstop=4                         " size of a hard tabstop
+set tabstop=2                         " size of a hard tabstop
 set tags=./tags;/
 set textwidth=78
 set timeoutlen=250                    " Time to wait after ESC
