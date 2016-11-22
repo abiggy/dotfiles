@@ -1,3 +1,5 @@
+#!/bin/sh
+
 eval "$(rbenv init -)"
 export BOXEN_SOCKET_DIR=/usr/local/var/project-sockets
 

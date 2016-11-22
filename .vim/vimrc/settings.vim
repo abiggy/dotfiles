@@ -48,7 +48,6 @@ set textwidth=78
 set timeoutlen=250                    " Time to wait after ESC
 set timeoutlen=600
 set ttimeoutlen=50
-set viminfo='10,\"100,:20,%,n~/.viminfo    " Use viminfo
 set visualbell
 set wildmenu
 set wildmode=list:longest,full        " bash-like command line tab completion

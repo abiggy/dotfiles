@@ -15,3 +15,11 @@ set directory=~/.vim_backups/
 
 " Syntax highlighting from start. Slow but better.
 autocmd BufEnter * :syntax sync fromstart
+
+" NeoVim fixes
+if has('nvim')
+    nmap <BS> <C-W>h
+    set viminfo+=n~/.shada
+else
+    set viminfo='10,\"100,:20,%,n~/.viminfo    " Use viminfo
+endif

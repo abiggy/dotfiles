@@ -57,8 +57,16 @@ title() {
 }
 
 gpr() {
-    git push && git open-pr "integration"
+    git push && open-pr "integration"
 }
 
-alias refresh='source "$HOME/.zshrc"'
+__reload_dotfiles() {
+  PATH="$(command -p getconf PATH):/usr/local/bin"
+  # shellcheck disable=SC1090
+  . ~/.zshrc
+  cd . || return 1
+}
+alias refresh='__reload_dotfiles'
+
 source <(antibody init)
+antibody bundle caarlos0/open-pr
