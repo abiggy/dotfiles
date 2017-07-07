@@ -16,6 +16,41 @@ let g:NERDSpaceDelims = 1
 " NERD_Tree
 let g:NERDTreeWinPos = 'right'
 map <Leader>n :NERDTreeFind<cr>
+map <Leader>h :NERDTreeToggle %<cr>
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=0
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let NERDTreeIgnore = ['^\.DS_Store$']
+"Open NERDTree if no files specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('js', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('js\*', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('jsx', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('html', 'red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('html\*', 'red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('scss', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('rb', 'Magenta', 'none', '#ff00ff', '#151515')
+
+call NERDTreeHighlightFile('component.js', '48', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('directive.js', '48', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('controller.js', '77', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('controller.js*', '77', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('module.js', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('spec.js', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('spec.js\*', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('service.js', 'Magenta', 'none', '#ff00ff', '#151515')
 
 " Python-mode
 let g:pymode_lint_write = 0
@@ -35,11 +70,13 @@ let g:syntastic_html_tidy_ignore_errors=[
     \" proprietary attribute \"acl-"
 \]
 let g:syntastic_sass_checkers=["sass_lint"]
-let g:syntastic_scss_checkers=["sass_lint"]
+let g:syntastic_scss_checkers=["scss_lint"]
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_loc_list_height = 5
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_wq = 1
+let g:syntastic_mode="passive"
+nmap <F6> :SyntasticToggleMode<CR>
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
@@ -47,8 +84,6 @@ highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
-" use project eslintrc if available
-autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['standard']
 " dont use project ignore
 let g:syntastic_javascript_eslint_args = "--no-ignore"
 " let g:syntastic_javascript_eslint_args = ""
@@ -83,7 +118,7 @@ if executable('ag')
     set grepprg=ag\ --nogroup\ --nocolor
 
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_user_command = 'ag %s -l -Q --hidden --nocolor -g ""'
 
     " ag is fast enough that CtrlP doesn't need to cache
     let g:ctrlp_use_caching = 0
@@ -127,3 +162,9 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+
+" json
+let g:vim_json_syntax_conceal = 0
+
+" Devicons adding symbols for nerdtree etc
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '

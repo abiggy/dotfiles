@@ -70,3 +70,8 @@ alias refresh='__reload_dotfiles'
 
 source <(antibody init)
 antibody bundle caarlos0/open-pr
+
+precmd() {
+  # sets the tab title to current dir
+  echo -ne "\e]1;${PWD##*/}\a"
+}

@@ -1,7 +1,7 @@
 " Various mappings go here
 
 " Make it easy to edit .vimrc anytime!
-map <Leader>; :tabe $MYVIMRC<CR>
+map <Leader>; :tabe ~/dotfiles<CR>
 
 " Autoclosing braces
 inoremap {<CR> {<CR>}<ESC>O

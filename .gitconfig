@@ -6,22 +6,23 @@
     user = adam-acl
 
 [user]
-    name = Adam Biglow
-    email = adam_biglow@acl.com
+	name = Adam Biglow
+	email = adam_biglow@acl.com
 
 [core]
     editor = /usr/bin/vim
-    excludesfile = ~/.cvsignore
+	excludesfile = ~/.gitignore
     attributesfile = ~/.gitattributes
-	whitespace = trailing-space,space-before-tab
+    pager = less -+$LESS -FRX
 
 ### colors are meant for a dark terminal
 [color]
-	ui = auto
+    ui = true
     diff = auto
     status = auto
     branch = auto
     interactive = auto
+    pager = true
 [color "branch"]
     current = yellow reverse
     local  = yellow
@@ -35,7 +36,7 @@
     whitespace = red blink
 [color "status"]
     added = yellow
-    changed = green
+    changed = green bold
     untracked = cyan
 
 [alias]
@@ -58,11 +59,16 @@
     cp = cherry-pick
     sh = !git-sh
   # "garbage-collect branches" whose tips have been merged into trunk
-    gcbr = !git branch --no-color --no-track --merged trunk | sed 's/[ *]*//' | grep -v master | grep -v '(no branch)' | xargs -n1 git branch -D || exit 0
+    gcbr = !git branch --no-color --no-track --merged integration | sed 's/[ *]*//' | grep -v master | grep -v '(no branch)' | xargs -n1 git branch -D || exit 0
     pg = push origin HEAD:refs/for/master
     hist = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %C(bold white)[%an]%C(reset)%C(bold yellow)%d%C(reset)' --all
     wd = diff --color-words
     d = difftool
+    ignore = update-index --skip-worktree
+    unignore = update-index --no-skip-worktree
+    ignored = !git ls-files -v | grep \"^S\"
+    unignoreall = !git ls-files -v | grep \"^S\" | cut -c 3- | xargs git update-index --no-skip-worktree
+    ignoreall = !sh -c \"git status --short $1 | cut -c 3- | xargs git update-index --skip-worktree\" --
 
 [svn]
     followparent = true
@@ -73,15 +79,15 @@
 [blame]
     date = short
 [diff]
-	renames = copies
-	mnemonicprefix = true
+    renames = copies
+    mnemonicprefix = true
     tool = vimdiff
   #external = git_diff_wrapper
 [apply]
     whitespace = strip
 [merge]
     tool = vimdiff
-	stat = true
+    stat = true
 [status]
     relativePaths = false
 [web]
@@ -106,6 +112,6 @@
     clean = git-media-clean %f
     smudge = git-media-smudge %f
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
 [init]
-	templatedir = ~/.git_template
+    templatedir = ~/.git_template

@@ -44,7 +44,7 @@ endif
 
 if exists('+colorcolumn')
   hi ColorColumn ctermbg=235 guibg=#2C2D27
-  set colorcolumn=100
+  set colorcolumn=120
 endif
 
 " Molokai Original

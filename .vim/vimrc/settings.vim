@@ -6,11 +6,11 @@ set autowrite                         " Automatically save before commands like 
 set backspace=indent,eol,start        " Backspace over everything.
 set cursorline                        " highlight cursor line
 set diffopt+=vertical                 " make gdiff vertical instead of horizontal
-set encoding=utf-8
+set encoding=utf8
 set expandtab                         " always uses spaces instead of tab characters
 set foldlevel=20
-"set foldmethod=Syntax                " makes 7.4 almost unusable slow e.g. for js&ruby files
-set foldmethod=indent                 " Works much better for js files."
+"set foldmethod=Syntax                 makes 7.4 almost unusable slow e.g. for js&ruby files
+set foldmethod=indent                 " Works much better for js files. @TODO Slow?
 set nofoldenable                      " disable folding
 set formatoptions=1
 set hidden                            " Keep buffers around after closing them
@@ -21,7 +21,7 @@ set incsearch                         " search as you type
 set laststatus=2                      " Always show the status line
 set linebreak
 set list                              " show trailing whitespace and tabs
-set listchars=tab:\|\ ,trail:•,extends:>,precedes:<,nbsp:+
+set listchars=tab:\▸\ ,trail:•,extends:>,precedes:<
 set modelines=1
 set mouse=a
 set noequalalways

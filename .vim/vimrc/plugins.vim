@@ -75,29 +75,28 @@ Bundle 'scrooloose/snipmate-snippets'
 " Language support
 Bundle 'tpope/vim-rails'
 Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-haml'
+"Bundle 'tpope/vim-haml'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'itspriddle/vim-jquery'
-"Bundle 'leshill/vim-json'
 Bundle 'elzr/vim-json'
 Bundle 'tpope/vim-markdown'
 Bundle 'vimoutliner/vimoutliner'
-Bundle 'wannesm/wmgraphviz.vim'
-Bundle 'omlet.vim'
-Bundle 'jcf/vim-latex'
-Bundle 'vim-scripts/haskell.vim'
+"Bundle 'wannesm/wmgraphviz.vim'
+"Bundle 'omlet.vim'
+"Bundle 'jcf/vim-latex'
+"Bundle 'vim-scripts/haskell.vim'
 Bundle 'spf13/PIV'
 Bundle 'othree/html5.vim'
-Bundle 'groenewege/vim-less'
 Bundle 'slim-template/vim-slim'
 Bundle 'klen/python-mode'
 Bundle 'django.vim'
 
+" CSS Plugins
+"Bundle 'skammer/vim-css-color' " This is sooo slow slows HTML and CSS
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'csscomb/vim-csscomb'
 Bundle 'hail2u/vim-css3-syntax'
-
-Bundle 'guns/vim-clojure-static'
-Bundle 'tpope/vim-fireplace'
 
 " Vim Text Objects
 Bundle 'bkad/CamelCaseMotion'
@@ -133,7 +132,7 @@ Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 
 " PHP debugger
-Bundle "joonty/vdebug"
+" Bundle "joonty/vdebug"
 
 " Quick easy scratch pad
 Bundle "mtth/scratch.vim"
@@ -145,8 +144,6 @@ Bundle 'codegram/vim-codereview'
 " ES6
 Bundle 'isRuslan/vim-es6'
 
-" CSS colours
-Bundle 'skammer/vim-css-color'
 
 " TERN
 Bundle 'ternjs/tern_for_vim'
@@ -155,7 +152,7 @@ Bundle 'ternjs/tern_for_vim'
 Bundle 'gcorne/vim-sass-lint'
 
 "Nerdtree git tags for files support
-Bundle 'Xuyuanp/nerdtree-git-plugin' 
+Bundle 'Xuyuanp/nerdtree-git-plugin'
 " Angular functionality
 Bundle 'burnettk/vim-angular'
 " Node js
@@ -164,8 +161,17 @@ Bundle 'moll/vim-node'
 Bundle 'othree/javascript-libraries-syntax.vim'
 " Javascript parameter completion
 Bundle 'othree/jspc.vim'
+" handle HTML5 syntax highlighting
+Bundle 'othree/html5-syntax.vim'
 " Expansion of vim's javascript syntax file for HTML5
 Bundle '1995eaton/vim-better-javascript-completion'
 " Additional JS syntax highlighting
 Bundle 'jelera/vim-javascript-syntax'
+" Bunch more symbols for nerdtree and stuff
+Plugin 'ryanoasis/vim-devicons'
 
+" Formatting for prettier in vim
+Plugin 'sbdchd/neoformat'
+
+" Gbrowse back
+Plugin 'tpope/vim-rhubarb'

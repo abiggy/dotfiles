@@ -3,6 +3,7 @@
 au BufNewFile,BufRead *.coffee set ft=coffee
 au BufNewFile,BufRead *.cgi set ft=perl
 au BufNewFile,BufRead *.dot set list smartindent
+au BufNewFile,BufRead *.rb setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead Gemfile,*.ru set ft=ruby
 au BufNewFile,BufRead *.js setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.jsx setlocal ts=2 sts=2 sw=2 expandtab
@@ -22,6 +23,9 @@ au BufNewFile,BufRead *.tex set nolist
 au BufNewFile,BufRead *.thor set ft=ruby
 au BufNewFile,BufRead *.tt,*.tt2 set ft=tt2html ts=4 sts=4 sw=4 expandtab
 au BufReadPost fugitive://* set bufhidden=delete
+au BufNewFile,BufRead *.less set filetype=less
+
+au FileType less set omnifunc=csscomplete#CompleteCSS
 
 " Ctrl-N to lint current PHP file
 autocmd FileType php noremap <C-N> :w<CR>:!/usr/bin/env php %<CR>
@@ -35,3 +39,8 @@ autocmd FileType ruby noremap <Leader>m :w<CR>:!/usr/bin/env ruby -c %<CR>
 let g:haskell_indent_if = 2
 
 let javaScript_fold=1         " JavaScript
+
+" prettier JS files on save
+autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
+autocmd BufWritePre *.js,*.jsx Neoformat
+let g:neoformat_try_formatprg = 1
