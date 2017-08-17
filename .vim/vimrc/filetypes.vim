@@ -42,5 +42,6 @@ let javaScript_fold=1         " JavaScript
 
 " prettier JS files on save
 autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
+autocmd BufNewFile,BufRead *.jsx setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
 autocmd BufWritePre *.js,*.jsx Neoformat
 let g:neoformat_try_formatprg = 1

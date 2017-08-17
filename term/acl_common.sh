@@ -10,72 +10,63 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 export NVM_DIR="$HOME/.nvm"
   . "/usr/local/opt/nvm/nvm.sh"
 
-code_root="$HOME/src"
+code_root="$HOME/src"                                   # ~/src
 
-viz_root="$code_root/visualizer"
-viz2_root="$code_root/visualizer2"
-res_root="$code_root/acl-exception"
-acc_root="$code_root/accounts"
-risk_root="$code_root/aclrisk"
-proj_root="$code_root/workpapers"
-vizui_root="$code_root/viz-ui"
-aclui_root="$code_root/acl-ui"
+viz_root="$code_root/visualizer"                        # ~/src/visualizer
+viz2_root="$code_root/visualizer2"                      # ~/src/visualizer2
+res_root="$code_root/acl-exception"                     # ~/src/acl-exception
+acc_root="$code_root/accounts"                          # ~/src/accounts
+risk_root="$code_root/aclrisk"                          # ~/src/aclrisk
+proj_root="$code_root/workpapers"                       # ~/src/workpapers
+vizui_root="$code_root/viz-ui"                          # ~/src/viz-ui
+aclui_root="$code_root/acl-ui"                          # ~/src/acl-ui
+grc_root="$code_root/grc-development-environment"       # ~/src/grc-development-environment
 
-viz_dist="$viz_root/dist"
-viz_vizui_root="$viz_root/bower_components/viz-ui"
-viz_vizui_dist="$viz_vizui_root/dist"
-res_viz_root_old="$res_root/vendor/assets/bower_components/visualizer"
-res_viz_root="$res_root/public/visualizer"
-res_viz_dist_old="$res_viz_root_old/dist"
-res_viz_dist="$res_viz_root/dist"
-vizui_dist="$vizui_root/dist"
+viz_dist="$viz_root/dist"                               # ~/src/visualizer/dist
+viz_vizui_root="$viz_root/bower_components/viz-ui"      # ~/src/visualizer/bower_components/viz-ui
+viz_vizui_dist="$viz_vizui_root/dist"                   # ~/src/visualizer/bower_components/viz-ui/dist
+res_viz_root="$res_root/public/visualizer"              # ~/src/acl-exception/public/visualizer
+res_viz_dist="$res_viz_root/dist"                       # ~/src/acl-exception/public/visualizer/dist
+vizui_dist="$vizui_root/dist"                           # ~/src/viz-ui/dist
+res_log="$res_root/log/development.log"                 # ~/src/acl-exception/log/development.log
 
-alias res_viz="cd $res_viz_dist"
+alias res_viz="cd $res_viz_dist"                        # cd ~/src/acl-exception/public/visualizer/dist
 
-alias viz="cd $viz_root"
-alias viz2="cd $viz2_root"
-alias res="cd $res_root"
-alias acc="cd $acc_root"
-alias vizui="cd $vizui_root"
-alias vizu="cd $vizui_root"
-alias vu="cd $vizui_root"
-alias code="cd $code_root"
-alias aclu="cd $aclui_root"
+alias viz="cd $viz_root"                                # cd ~/src/visualizer
+alias viz2="cd $viz2_root"                              # cd ~/src/visualizer2
+alias res="cd $res_root"                                # cd ~/src/acl-exception
+alias acc="cd $acc_root"                                # cd ~/src/accounts
+alias vizui="cd $vizui_root"                            # cd ~/src/viz-ui
+alias vizu="cd $vizui_root"                             # cd ~/src/viz-ui
+alias vu="cd $vizui_root"                               # cd ~/src/viz-ui
+alias code="cd $code_root"                              # cd ~/src
+alias aclu="cd $aclui_root"                             # cd ~/src/acl-ui
+alias grcdev="cd $grc_root"                             # cd ~/src/grc-development-environment
 
-function res_viz_rm_old() {
-    rm -rf $res_viz_dist_old
-}
+alias reslog="tail -f $res_log"                         # tail -f ~/src/acl-exception/log/development.log
 
 function res_viz_rm() {
-    rm -rf $res_viz_dist
-}
-
-function res_viz_cp_old() {
-    res_viz_rm_old && cp -a $viz_dist $res_viz_root_old
+    rm -rf $res_viz_dist                                # rm -rf ~/src/acl-exception/public/visualizer/dist
 }
 
 function res_viz_cp() {
-    res_viz_rm && cp -a $viz_dist $res_viz_root
-}
-
-function res_viz_ln_old() {
-    res_viz_rm_old && ln -nsf $viz_dist $res_viz_dist_old
+    res_viz_rm && cp -a $viz_dist $res_viz_root         # cp -a ~/src/visualizer/dist ~/src/acl-exception/public/visualizer
 }
 
 function res_viz_ln() {
-    res_viz_rm && ln -nsf $viz_dist $res_viz_dist
+    res_viz_rm && ln -nsf $viz_dist $res_viz_dist       # ln -nsf ~/src/visualizer/dist ~/src/acl-exception/public/visualizer/dist
 }
 
 function viz_vizui_rm() {
-    rm -rf $viz_vizui_dist
+    rm -rf $viz_vizui_root                              # rm -rf ~/src/visualizer/bower_components/viz-ui
 }
 
 function viz_vizui_cp() {
-    viz_vizui_rm && cp -a $vizui_dist $viz_vizui_root
+    viz_vizui_rm && cp -a $vizui_root $viz_vizui_root   # cp -a ~/src/viz-ui ~/src/visualizer/bower_components/viz-ui
 }
 
 function viz_vizui_ln() {
-    viz_vizui_rm && ln -nsf $vizui_dist $viz_vizui_root
+    viz_vizui_rm && ln -nsf $vizui_root $viz_vizui_root # ln -nsf ~/src/viz-ui ~/src/visualizer/bower_components/viz-ui
 }
 
 function res_build() {
