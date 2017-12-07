@@ -10,6 +10,8 @@ export PATH=./node_modules/.bin:$PATH
 
 export DOTFILES="$HOME/dotfiles"
 
+export VISUAL=/usr/local/bin/vim
+
 alias b='bundle'
 alias be='bundle exec'
 alias bi='bundle install'

@@ -6,11 +6,11 @@
     user = adam-acl
 
 [user]
-	name = Adam Biglow
-	email = adam_biglow@acl.com
+    name = Adam Biglow
+    email = adam_biglow@acl.com
 
 [core]
-    editor = /usr/bin/vim
+    editor = /usr/local/bin/vim
 	excludesfile = ~/.gitignore
     attributesfile = ~/.gitattributes
     pager = less -+$LESS -FRX

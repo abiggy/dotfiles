@@ -8,6 +8,7 @@ au BufNewFile,BufRead Gemfile,*.ru set ft=ruby
 au BufNewFile,BufRead *.js setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.jsx setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.es6 set ft=javascript ts=2 sts=2 sw=2 expandtab
+au BufNewFile,BufRead *.json setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.md set nolist
 au BufNewFile,BufRead *.ml set tw=0 wrapmargin=0 " No automatic line wrapping
 au BufNewFile,BufRead *.otl set ft=vo_base nolist noexpandtab smartindent tw=100
@@ -43,5 +44,6 @@ let javaScript_fold=1         " JavaScript
 " prettier JS files on save
 autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
 autocmd BufNewFile,BufRead *.jsx setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
-autocmd BufWritePre *.js,*.jsx Neoformat
+autocmd BufNewFile,BufRead *.es6 setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
+autocmd BufWritePre *.js,*.jsx,*.es6 Neoformat
 let g:neoformat_try_formatprg = 1

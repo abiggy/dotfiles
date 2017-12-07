@@ -36,6 +36,8 @@ call NERDTreeHighlightFile('js', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('js\*', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('jsx', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('jsx\*', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('es6', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('es6\*', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('html', 'red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('html\*', 'red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
@@ -98,7 +100,7 @@ highlight link SyntasticStyleWarningSign SignColumn
 let g:syntastic_javascript_eslint_args = "--no-ignore"
 " let g:syntastic_javascript_eslint_args = ""
 "
-let g:syntastic_error_symbol = '❌'
+let g:syntastic_error_symbol = '💩'
 let g:syntastic_style_error_symbol = '⁉️'
 let g:syntastic_warning_symbol = '⚠️'
 let g:syntastic_style_warning_symbol = '💩'
@@ -124,23 +126,32 @@ map <Leader> <Plug>(easymotion-prefix)
 
 " The Silver Searcher
 if executable('ag')
+    " search without specs
+    command! -nargs=+ Agi :Ag <q-args> --ignore *spec*
+
     " Use ag over grep
     set grepprg=ag\ --nogroup\ --nocolor
 
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l -Q --hidden --nocolor -g ""'
-
+    " open it if already open in current tab
+    let g:ctrlp_switch_buffer = 'e'
+    " don't get fancy when choosing working directory
+    let g:ctrlp_working_path_mode = 0
     " ag is fast enough that CtrlP doesn't need to cache
     let g:ctrlp_use_caching = 0
+
+    " Use ag in CtrlP for listing files. Lightning fast
+    let g:ctrlp_user_command = ['ag %s -l -Q --nocolor --hidden -g ""']
+    " If there is a gitignore respect it
+    let g:ctrlp_user_command += ['.git', 'cd %s && git ls-files -co --exclude-standard']
 endif
 
 " Ignore some folders and files for CtrlP indexing
+" Don't think this actually works maybe ds_store
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.yardoc\|public$|log\|tmp$|build$|bin$',
   \ 'file': '\.so$\|\.dat$|\.DS_Store$'
   \ }
 let g:ctrlp_max_files=0
-
 
 " Airline fonts
 " air-line
@@ -178,3 +189,9 @@ let g:vim_json_syntax_conceal = 0
 
 " Devicons adding symbols for nerdtree etc
 let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+
+" JSX for js files too
+let g:jsx_ext_required = 0
+
+" Fugitive
+command! Gd Gdiff

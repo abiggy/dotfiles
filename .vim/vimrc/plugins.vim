@@ -26,10 +26,6 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 " Ultimate Vim statusline utility airline instead
 "Bundle 'powerline/powerline'
-" Highlights the matching HTML tag
-Bundle 'gregsexton/MatchTag'
-" Rainbow parentheses!! :)
-Bundle 'kien/rainbow_parentheses.vim'
 
 " ------------------------
 " --- Vim enhancements ---
@@ -92,11 +88,6 @@ Bundle 'slim-template/vim-slim'
 Bundle 'klen/python-mode'
 Bundle 'django.vim'
 
-" CSS Plugins
-"Bundle 'skammer/vim-css-color' " This is sooo slow slows HTML and CSS
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'csscomb/vim-csscomb'
-Bundle 'hail2u/vim-css3-syntax'
 
 " Vim Text Objects
 Bundle 'bkad/CamelCaseMotion'
@@ -132,10 +123,10 @@ Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 
 " PHP debugger
-" Bundle "joonty/vdebug"
+" Bundle 'joonty/vdebug'
 
 " Quick easy scratch pad
-Bundle "mtth/scratch.vim"
+Bundle 'mtth/scratch.vim'
 
 " Git CodeReview Plugin
 Bundle 'junkblocker/patchreview-vim'
@@ -157,21 +148,40 @@ Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'burnettk/vim-angular'
 " Node js
 Bundle 'moll/vim-node'
-" Javascript syntax library highlighting
-Bundle 'othree/javascript-libraries-syntax.vim'
 " Javascript parameter completion
 Bundle 'othree/jspc.vim'
+" Bunch more symbols for nerdtree and stuff
+Bundle 'ryanoasis/vim-devicons'
+
+" Formatting for prettier in vim
+Bundle 'sbdchd/neoformat'
+
+" Gbrowse back
+Bundle 'tpope/vim-rhubarb'
+
+
+"Syntax Highlighting
+
+" Javascript syntax library highlighting
+Bundle 'othree/javascript-libraries-syntax.vim'
 " handle HTML5 syntax highlighting
 Bundle 'othree/html5-syntax.vim'
 " Expansion of vim's javascript syntax file for HTML5
 Bundle '1995eaton/vim-better-javascript-completion'
 " Additional JS syntax highlighting
 Bundle 'jelera/vim-javascript-syntax'
-" Bunch more symbols for nerdtree and stuff
-Plugin 'ryanoasis/vim-devicons'
 
-" Formatting for prettier in vim
-Plugin 'sbdchd/neoformat'
 
-" Gbrowse back
-Plugin 'tpope/vim-rhubarb'
+
+" CSS Plugins
+"Bundle 'skammer/vim-css-color' " This is sooo slow slows HTML and CSS
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'csscomb/vim-csscomb'
+Bundle 'hail2u/vim-css3-syntax'
+
+" Highlights the matching HTML tag
+Bundle 'gregsexton/MatchTag'
+" Rainbow parentheses!! :)
+Bundle 'kien/rainbow_parentheses.vim'
+
+Bundle 'neoclide/vim-jsx-improve'
