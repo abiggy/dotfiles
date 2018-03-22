@@ -66,15 +66,23 @@ function viz_vizui_rm() {
     rm -rf $viz_vizui_root                              # rm -rf ~/src/visualizer/bower_components/viz-ui
 }
 
+function viz_vizui_mk() {
+    echo "mkdir $viz_vizui_root"
+    mkdir $viz_vizui_root                               # mkdir ~/src/visualizer/bower_components/viz-ui
+}
+
 function viz_vizui_cp() {
-    viz_vizui_rm && cp -a $vizui_root $viz_vizui_root   # cp -a ~/src/viz-ui ~/src/visualizer/bower_components/viz-ui
-    echo "cp -a $vizui_root $viz_vizui_root"
+    viz_vizui_rm
+    viz_vizui_mk
+    echo "cp -a $vizui_dist $viz_vizui_root"
+    cp -a $vizui_dist $viz_vizui_root                   # cp -a ~/src/viz-ui/dist ~/src/visualizer/bower_components/viz-ui
 }
 
 function viz_vizui_ln() {
     viz_vizui_rm
-    echo "ln -nsf $vizui_root $viz_vizui_root"
-    ln -nsf $vizui_root $viz_vizui_root # ln -nsf ~/src/viz-ui ~/src/visualizer/bower_components/viz-ui
+    viz_vizui_mk
+    echo "ln -nsf $vizui_dist $viz_vizui_dist"
+    ln -nsf $vizui_dist $viz_vizui_dist                 # ln -nsf ~/src/viz-ui/dist ~/src/visualizer/bower_components/viz-ui/dist
 }
 
 function res_build() {

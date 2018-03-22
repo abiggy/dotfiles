@@ -114,7 +114,7 @@ endif
 nnoremap \A :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwi
-nnoremap \a :Agi<SPACE>
+nnoremap \a :Ag<SPACE>
 
 " Increase and Decrease the splits using shift and direction key.
 nnoremap <S-H> <C-W>>

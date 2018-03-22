@@ -41,9 +41,7 @@ let g:haskell_indent_if = 2
 
 let javaScript_fold=1         " JavaScript
 
-" prettier JS files on save
-autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
-autocmd BufNewFile,BufRead *.jsx setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
-autocmd BufNewFile,BufRead *.es6 setlocal formatprg=prettier\ --stdin\ --print-width\ 120\ --trailing-comma\ es5
-autocmd BufWritePre *.js,*.jsx,*.es6 Neoformat
-let g:neoformat_try_formatprg = 1
+"To enable vim-prettier to run in files without requiring the "@format" doc tag.
+"First disable the default autoformat, then update to your own custom behaviour
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier

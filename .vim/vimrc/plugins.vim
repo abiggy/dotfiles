@@ -31,7 +31,9 @@ Bundle 'scrooloose/nerdtree'
 " --- Vim enhancements ---
 " ------------------------
 " Shows 'Nth match out of M' for searches
-Bundle 'IndexedSearch'
+" Bundle 'IndexedSearch'
+" trying this instead
+Bundle 'google/vim-searchindex'
 " Allow tab completion when searching
 Bundle 'SearchComplete'
 " Simple plugin to view most recently used files
@@ -82,7 +84,8 @@ Bundle 'vimoutliner/vimoutliner'
 "Bundle 'omlet.vim'
 "Bundle 'jcf/vim-latex'
 "Bundle 'vim-scripts/haskell.vim'
-Bundle 'spf13/PIV'
+"PHP thing
+"Bundle 'spf13/PIV'
 Bundle 'othree/html5.vim'
 Bundle 'slim-template/vim-slim'
 Bundle 'klen/python-mode'
@@ -154,7 +157,7 @@ Bundle 'othree/jspc.vim'
 Bundle 'ryanoasis/vim-devicons'
 
 " Formatting for prettier in vim
-Bundle 'sbdchd/neoformat'
+Bundle 'prettier/vim-prettier'
 
 " Gbrowse back
 Bundle 'tpope/vim-rhubarb'
@@ -185,3 +188,7 @@ Bundle 'gregsexton/MatchTag'
 Bundle 'kien/rainbow_parentheses.vim'
 
 Bundle 'neoclide/vim-jsx-improve'
+
+
+" Indent indicator
+Bundle 'nathanaelkane/vim-indent-guides'

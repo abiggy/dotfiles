@@ -102,7 +102,7 @@ let g:syntastic_javascript_eslint_args = "--no-ignore"
 "
 let g:syntastic_error_symbol = '💩'
 let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_warning_symbol = '🙀'
 let g:syntastic_style_warning_symbol = '💩'
 let g:syntastic_style_error_symbol = '💩'
 
@@ -195,3 +195,9 @@ let g:jsx_ext_required = 0
 
 " Fugitive
 command! Gd Gdiff
+
+" Indent colouring
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_enable_on_vim_startup = 1
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=233
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
