@@ -6,10 +6,6 @@ export BOXEN_SOCKET_DIR=/usr/local/var/project-sockets
 # Added so rbenv loads every time you open a terminal
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-# NVM required setup.
-export NVM_DIR="$HOME/.nvm"
-  . "/usr/local/opt/nvm/nvm.sh"
-
 code_root="$HOME/src"                                   # ~/src
 
 viz_root="$code_root/visualizer"                        # ~/src/visualizer
@@ -36,12 +32,13 @@ alias viz="cd $viz_root"                                # cd ~/src/visualizer
 alias viz2="cd $viz2_root"                              # cd ~/src/visualizer2
 alias res="cd $res_root"                                # cd ~/src/acl-exception
 alias acc="cd $acc_root"                                # cd ~/src/accounts
-alias vizui="cd $vizui_root"                            # cd ~/src/viz-ui
-alias vizu="cd $vizui_root"                             # cd ~/src/viz-ui
 alias vu="cd $vizui_root"                               # cd ~/src/viz-ui
+alias vizu="cd $vizui_root"                             # cd ~/src/viz-ui
+alias vizui="cd $vizui_root"                            # cd ~/src/viz-ui
 alias code="cd $code_root"                              # cd ~/src
 alias src="cd $code_root"                               # cd ~/src
 alias aclu="cd $aclui_root"                             # cd ~/src/acl-ui
+alias aclui="cd $aclui_root"                            # cd ~/src/acl-ui
 alias grcdev="cd $grc_root"                             # cd ~/src/grc-development-environment
 
 alias reslog="tail -f $res_log"                         # tail -f ~/src/acl-exception/log/development.log

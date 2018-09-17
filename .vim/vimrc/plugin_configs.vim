@@ -55,14 +55,16 @@ call NERDTreeHighlightFile('component.js', '48', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('component.js\*', '48', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('directive.js', '48', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('directive.js\*', '48', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('controller.js', '77', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('controller.js\*', '77', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('module.js', 'blue', 'none', '#3366FF', '#151515')
 call NERDTreeHighlightFile('module.js\*', 'blue', 'none', '#3366FF', '#151515')
 call NERDTreeHighlightFile('service.js', 'Magenta', 'none', '#ff00ff', '#151515')
 call NERDTreeHighlightFile('service.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('er.js', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('er.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
 call NERDTreeHighlightFile('spec.js', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('spec.js\*', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('controller.js', '77', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('controller.js\*', '77', 'none', 'green', '#151515')
 
 " Python-mode
 let g:pymode_lint_write = 0
@@ -113,9 +115,6 @@ nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 nmap <Leader>a, :Tabularize /,\zs<CR>
 vmap <Leader>a, :Tabularize /,\zs<CR>
-
-" tagbar
-nmap <Leader>t :TagbarToggle<CR>
 
 " ZenCoding
 let g:user_emmet_leader_key = '<c-t>'
@@ -184,6 +183,23 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
+" vim-javascript concealing characters hiding syntax with these symbols
+let g:javascript_conceal_function             = "ƒ"
+let g:javascript_conceal_null                 = "ø"
+let g:javascript_conceal_this                 = "@"
+let g:javascript_conceal_return               = "⇚"
+let g:javascript_conceal_undefined            = "¿"
+let g:javascript_conceal_NaN                  = "ℕ"
+let g:javascript_conceal_prototype            = "¶"
+let g:javascript_conceal_static               = "•"
+let g:javascript_conceal_super                = "Ω"
+let g:javascript_conceal_arrow_function       = "⇒"
+"let g:javascript_conceal_noarg_arrow_function = "🞅"
+"let g:javascript_conceal_underscore_arrow_function = "🞅o"
+
+" toggle vim-javascript conceal
+map <leader>l :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=1"<CR>
+
 " json
 let g:vim_json_syntax_conceal = 0
 
@@ -201,3 +217,19 @@ let g:indent_guides_auto_colors = 0
 let g:indent_guides_enable_on_vim_startup = 1
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=233
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
+
+""""""""""""""""""""""""""""""
+" => bufExplorer plugin
+""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0
+let g:bufExplorerShowRelativePath=1
+let g:bufExplorerFindActive=1
+let g:bufExplorerSortBy='name'
+map <leader>, :BufExplorer<CR>
+
+
+""""""""""""""""""""""""""""""
+" => MRU plugin
+""""""""""""""""""""""""""""""
+let MRU_Max_Entries = 400
+map <leader>m :MRU<CR>

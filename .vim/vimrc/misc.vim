@@ -23,3 +23,6 @@ if has('nvim')
 else
     set viminfo='10,\"100,:20,%,n~/.viminfo    " Use viminfo
 endif
+
+" Return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif

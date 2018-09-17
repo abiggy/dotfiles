@@ -24,15 +24,11 @@ Bundle 'kien/ctrlp.vim'
 " -----------------------
 " File explorer within Vim
 Bundle 'scrooloose/nerdtree'
-" Ultimate Vim statusline utility airline instead
-"Bundle 'powerline/powerline'
 
 " ------------------------
 " --- Vim enhancements ---
 " ------------------------
 " Shows 'Nth match out of M' for searches
-" Bundle 'IndexedSearch'
-" trying this instead
 Bundle 'google/vim-searchindex'
 " Allow tab completion when searching
 Bundle 'SearchComplete'
@@ -60,8 +56,11 @@ Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-endwise'
 Bundle 'matchit.zip'
-Bundle 'Valloric/YouCompleteMe'
 Bundle 'mattn/emmet-vim'
+
+Bundle 'Valloric/YouCompleteMe'
+" TERN
+Bundle 'ternjs/tern_for_vim'
 
 " snipMate
 Bundle 'garbas/vim-snipmate'
@@ -73,23 +72,9 @@ Bundle 'scrooloose/snipmate-snippets'
 " Language support
 Bundle 'tpope/vim-rails'
 Bundle 'vim-ruby/vim-ruby'
-"Bundle 'tpope/vim-haml'
 Bundle 'pangloss/vim-javascript'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'itspriddle/vim-jquery'
 Bundle 'elzr/vim-json'
-Bundle 'tpope/vim-markdown'
-Bundle 'vimoutliner/vimoutliner'
-"Bundle 'wannesm/wmgraphviz.vim'
-"Bundle 'omlet.vim'
-"Bundle 'jcf/vim-latex'
-"Bundle 'vim-scripts/haskell.vim'
-"PHP thing
-"Bundle 'spf13/PIV'
 Bundle 'othree/html5.vim'
-Bundle 'slim-template/vim-slim'
-Bundle 'klen/python-mode'
-Bundle 'django.vim'
 
 
 " Vim Text Objects
@@ -97,13 +82,18 @@ Bundle 'bkad/CamelCaseMotion'
 
 " Integrations
 Bundle 'tpope/vim-fugitive'
-Bundle 'mileszs/ack.vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'tpope/vim-classpath'
 
 " Colors
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'sjl/badwolf'
+"Bundle 'altercation/vim-colors-solarized'
+"Bundle 'sjl/badwolf'
+" Darkmate Color Scheme
+"Bundle 'yearofmoo/Vim-Darkmate'
+" Hybrid Theme
+"Bundle 'w0ng/vim-Hybrid'
+" Vimbrant theme'
+"Bundle 'thayerwilliams/vimbrant'
+"Tomorrow color theme
+"Bundle 'chriskempson/vim-tomorrow-theme'
 
 " Utilities, Dependencies
 Bundle 'L9'
@@ -112,35 +102,13 @@ Bundle 'L9'
 " --- MY NEW ONES          ---
 " ----------------------------
 Bundle 'vim-scripts/Tail-Bundle'
-" Darkmate Color Scheme
-Bundle "yearofmoo/Vim-Darkmate"
-" Hybrid Theme
-Bundle "w0ng/vim-Hybrid"
-" Vimbrant theme'
-Bundle "thayerwilliams/vimbrant"
-"Tomorrow color theme
-Bundle "chriskempson/vim-tomorrow-theme"
 " Airline is status bar uplift
 Bundle 'vim-airline/vim-airline'
 "Airline themes
 Bundle 'vim-airline/vim-airline-themes'
 
-" PHP debugger
-" Bundle 'joonty/vdebug'
-
-" Quick easy scratch pad
-Bundle 'mtth/scratch.vim'
-
-" Git CodeReview Plugin
-Bundle 'junkblocker/patchreview-vim'
-Bundle 'codegram/vim-codereview'
-
 " ES6
 Bundle 'isRuslan/vim-es6'
-
-
-" TERN
-Bundle 'ternjs/tern_for_vim'
 
 " Sassalinter
 Bundle 'gcorne/vim-sass-lint'

@@ -2,14 +2,6 @@
 source $HOME/dotfiles/term/term_common.sh
 source $HOME/dotfiles/term/acl_common.sh
 
-# Part of docker tutorial.
-function html2image() {
-    docker exec html2 ./wkhtmltoimage --encoding utf-8 --load-error-handling "ignore" --load-media-error-handling "ignore" --disable-javascript "$1" images/"$2"
-}
-function html2pdf() {
-    docker exec html2 ./wkhtmltopdf --encoding utf-8 --load-error-handling "ignore" --load-media-error-handling "ignore" --disable-javascript "$1" pdfs/"$2"
-}
-
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -140,3 +132,8 @@ elif type compctl &>/dev/null; then
   compctl -K _npm_completion npm
 fi
 ###-end-npm-completion-###
+#
+[[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
