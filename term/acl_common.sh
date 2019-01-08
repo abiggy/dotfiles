@@ -3,6 +3,8 @@
 eval "$(rbenv init -)"
 export BOXEN_SOCKET_DIR=/usr/local/var/project-sockets
 
+export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
+
 # Added so rbenv loads every time you open a terminal
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
@@ -17,6 +19,7 @@ proj_root="$code_root/workpapers"                       # ~/src/workpapers
 vizui_root="$code_root/viz-ui"                          # ~/src/viz-ui
 aclui_root="$code_root/acl-ui"                          # ~/src/acl-ui
 grc_root="$code_root/grc-development-environment"       # ~/src/grc-development-environment
+bot_root="$code_root/skynet-server"                     # ~/src/skynet-server
 
 viz_dist="$viz_root/dist"                               # ~/src/visualizer/dist
 viz_vizui_root="$viz_root/bower_components/viz-ui"      # ~/src/visualizer/bower_components/viz-ui
@@ -24,6 +27,10 @@ viz_vizui_dist="$viz_vizui_root/dist"                   # ~/src/visualizer/bower
 res_viz_root="$res_root/public/visualizer"              # ~/src/acl-exception/public/visualizer
 res_viz_dist="$res_viz_root/dist"                       # ~/src/acl-exception/public/visualizer/dist
 vizui_dist="$vizui_root/dist"                           # ~/src/viz-ui/dist
+vizui_nodemodules="$vizui_root/node_modules"            # ~/src/viz-ui/node_modules
+vizui_aclui_root="$vizui_nodemodules/acl-ui"            # ~/src/viz-ui/node_modules/acl-ui
+aclui_dist="$aclui_root/acl-ui-dist"
+
 res_log="$res_root/log/development.log"                 # ~/src/acl-exception/log/development.log
 
 alias res_viz="cd $res_viz_dist"                        # cd ~/src/acl-exception/public/visualizer/dist
@@ -40,6 +47,7 @@ alias src="cd $code_root"                               # cd ~/src
 alias aclu="cd $aclui_root"                             # cd ~/src/acl-ui
 alias aclui="cd $aclui_root"                            # cd ~/src/acl-ui
 alias grcdev="cd $grc_root"                             # cd ~/src/grc-development-environment
+alias bot="cd $bot_root"                                # cd ~/src/skynet-server
 
 alias reslog="tail -f $res_log"                         # tail -f ~/src/acl-exception/log/development.log
 
@@ -80,6 +88,29 @@ function viz_vizui_ln() {
     viz_vizui_mk
     echo "ln -nsf $vizui_dist $viz_vizui_dist"
     ln -nsf $vizui_dist $viz_vizui_dist                 # ln -nsf ~/src/viz-ui/dist ~/src/visualizer/bower_components/viz-ui/dist
+}
+
+function vizui_aclui_ln() {
+    vizui_aclui_rm
+    echo "ln -nsf $aclui_dist $vizui_aclui_root"
+    ln -nsf $aclui_dist $vizui_aclui_root               # ln -nsf ~/src/acl-ui-dist ~/src/viz-ui/node_modules/acl-ui
+}
+
+function vizui_aclui_cp() {
+    vizui_aclui_rm
+    vizui_aclui_mk
+    echo "cp -a $aclui_dist/. $vizui_aclui_root"
+    cp -a $aclui_dist/. $vizui_aclui_root               # cp -a ~/src/acl-ui-dist/. ~/src/viz-ui/node_modules/acl-ui
+}
+
+function vizui_aclui_rm() {
+    echo "rm -rf $vizui_aclui_root"
+    rm -rf $vizui_aclui_root                            # rm -rf ~/src/viz-ui/node_modules/acl-ui
+}
+
+function vizui_aclui_mk() {
+    echo "mkdir $vizui_aclui_root"
+    mkdir $vizui_aclui_root                             # mkdir ~/src/viz-ui/node_modules/acl-ui
 }
 
 function res_build() {

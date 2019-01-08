@@ -129,7 +129,7 @@ if executable('ag')
     command! -nargs=+ Agi :Ag <q-args> --ignore *spec*
 
     " Use ag over grep
-    set grepprg=ag\ --nogroup\ --nocolor
+    set grepprg=ag\ --nogroup\ --nocolor\ --path-to-ignore\ ~/dotfiles/.agignore
 
     " open it if already open in current tab
     let g:ctrlp_switch_buffer = 'e'

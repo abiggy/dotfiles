@@ -55,6 +55,7 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-endwise'
+" % to match more than just single characters
 Bundle 'matchit.zip'
 Bundle 'mattn/emmet-vim'
 
@@ -151,7 +152,8 @@ Bundle 'csscomb/vim-csscomb'
 Bundle 'hail2u/vim-css3-syntax'
 
 " Highlights the matching HTML tag
-Bundle 'gregsexton/MatchTag'
+Bundle 'Valloric/MatchTagAlways'
+
 " Rainbow parentheses!! :)
 Bundle 'kien/rainbow_parentheses.vim'
 

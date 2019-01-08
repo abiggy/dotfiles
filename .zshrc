@@ -15,7 +15,7 @@ export CLICOLOR=true
 #ZSH_THEME="af-magic"
 #ZSH_THEME="sorin"
 #ZSH_THEME="fishy"
-#ZSH_THEME="syl20bnr"
+ZSH_THEME="syl20bnr"
 #ZSH_THEME="edvardm"
 ZSH_THEME="agnoster"
 
