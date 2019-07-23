@@ -1,6 +1,4 @@
 #!/bin/sh
-ssh-add ~/.ssh/id_rsa_work
-
 eval "$(rbenv init -)"
 export BOXEN_SOCKET_DIR=/usr/local/var/project-sockets
 
