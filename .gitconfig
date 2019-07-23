@@ -3,11 +3,11 @@
 ### the [user] section to your info
 
 [github]
-    user = adam-acl
+    user = abiggy
 
 [user]
     name = Adam Biglow
-    email = adam_biglow@acl.com
+    email = adam.biglow@gmail.com
 
 [core]
     editor = /usr/local/bin/vim
