@@ -1,4 +1,5 @@
 #!/bin/sh
+ssh-add ~/.ssh/id_rsa_work
 
 eval "$(rbenv init -)"
 export BOXEN_SOCKET_DIR=/usr/local/var/project-sockets
@@ -18,8 +19,11 @@ risk_root="$code_root/aclrisk"                          # ~/src/aclrisk
 proj_root="$code_root/workpapers"                       # ~/src/workpapers
 vizui_root="$code_root/viz-ui"                          # ~/src/viz-ui
 aclui_root="$code_root/acl-ui"                          # ~/src/acl-ui
+sriracha_root="$code_root/sriracha"                     # ~/src/sriracha
 grc_root="$code_root/grc-development-environment"       # ~/src/grc-development-environment
 bot_root="$code_root/skynet-server"                     # ~/src/skynet-server
+bot2_root="$code_root/skynet-server2"                   # ~/src/skynet-server2
+paprika_root="$code_root/paprika"                       # ~/src/paprika
 
 viz_dist="$viz_root/dist"                               # ~/src/visualizer/dist
 viz_vizui_root="$viz_root/bower_components/viz-ui"      # ~/src/visualizer/bower_components/viz-ui
@@ -29,7 +33,9 @@ res_viz_dist="$res_viz_root/dist"                       # ~/src/acl-exception/pu
 vizui_dist="$vizui_root/dist"                           # ~/src/viz-ui/dist
 vizui_nodemodules="$vizui_root/node_modules"            # ~/src/viz-ui/node_modules
 vizui_aclui_root="$vizui_nodemodules/acl-ui"            # ~/src/viz-ui/node_modules/acl-ui
-aclui_dist="$aclui_root/acl-ui-dist"
+aclui_dist="$aclui_root/acl-ui-dist"                    # ~/src/acl-ui/acl-ui-dist
+botjs_root="$bot_root/app/javascript/robots"            # ~/src/skynet-server/app/javascript/robots
+botjs2_root="$bot2_root/app/javascript/robots"          # ~/src/skynet-server2/app/javascript/robots
 
 res_log="$res_root/log/development.log"                 # ~/src/acl-exception/log/development.log
 
@@ -46,8 +52,17 @@ alias code="cd $code_root"                              # cd ~/src
 alias src="cd $code_root"                               # cd ~/src
 alias aclu="cd $aclui_root"                             # cd ~/src/acl-ui
 alias aclui="cd $aclui_root"                            # cd ~/src/acl-ui
+alias sri="cd $sriracha_root"                           # cd ~/src/sriracha
+alias sriracha="cd $sriracha_root"                      # cd ~/src/sriracha
+alias pap="cd $paprika_root"                            # cd ~/src/paprika
+alias paprika="cd $paprika_root"                        # cd ~/src/paprika
 alias grcdev="cd $grc_root"                             # cd ~/src/grc-development-environment
 alias bot="cd $bot_root"                                # cd ~/src/skynet-server
+alias bot2="cd $bot2_root"                              # cd ~/src/skynet-server2
+alias botjs="cd $botjs_root"                            # cd ~/src/skynet-server/app/javascript/robots
+alias botjs2="cd $botjs2_root"                          # cd ~/src/skynet-server2/app/javascript/robots
+alias bj="cd $botjs_root"                               # cd ~/src/skynet-server/app/javascript/robots
+alias bj2="cd $botjs2_root"                             # cd ~/src/skynet-server2/app/javascript/robots
 
 alias reslog="tail -f $res_log"                         # tail -f ~/src/acl-exception/log/development.log
 

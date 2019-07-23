@@ -37,7 +37,7 @@ Bundle 'mru.vim'
 Bundle 'bufexplorer.zip'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'rking/ag.vim'
-" Adds visualizations for vim marks
+" Adds visualizations for vim marks ie mm
 Bundle 'kshenoy/vim-signature'
 
 " ----------------------------
@@ -162,3 +162,6 @@ Bundle 'neoclide/vim-jsx-improve'
 
 " Indent indicator
 Bundle 'nathanaelkane/vim-indent-guides'
+
+" Typescript
+Plugin 'leafgarland/typescript-vim'

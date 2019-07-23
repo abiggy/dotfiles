@@ -22,6 +22,7 @@ let NERDTreeQuitOnOpen=0
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 let NERDTreeIgnore = ['^\.DS_Store$']
+let NERDTreeAutoDeleteBuffer = 1
 "Open NERDTree if no files specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -38,14 +39,21 @@ call NERDTreeHighlightFile('jsx', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('jsx\*', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('es6', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('es6\*', 'green', 'none', 'green', '#151515')
+
+call NERDTreeHighlightFile('Provider.js', 'lightGreen', 'none', '#31B53E', '#151515')
+call NERDTreeHighlightFile('Provider.js\*', 'lightGreen', 'none', '#31B53E', '#151515')
+
 call NERDTreeHighlightFile('html', 'red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('html\*', 'red', 'none', '#ffa500', '#151515')
+
 call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('json\*', 'yellow', 'none', 'yellow', '#151515')
+
 call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
 call NERDTreeHighlightFile('css\*', 'cyan', 'none', 'cyan', '#151515')
 call NERDTreeHighlightFile('scss', 'cyan', 'none', 'cyan', '#151515')
 call NERDTreeHighlightFile('scss\*', 'cyan', 'none', 'cyan', '#151515')
+
 call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 call NERDTreeHighlightFile('php\*', 'Magenta', 'none', '#ff00ff', '#151515')
 call NERDTreeHighlightFile('rb', 'Magenta', 'none', '#ff00ff', '#151515')
@@ -59,12 +67,36 @@ call NERDTreeHighlightFile('module.js', 'blue', 'none', '#3366FF', '#151515')
 call NERDTreeHighlightFile('module.js\*', 'blue', 'none', '#3366FF', '#151515')
 call NERDTreeHighlightFile('service.js', 'Magenta', 'none', '#ff00ff', '#151515')
 call NERDTreeHighlightFile('service.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('er.js', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('er.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('spec.js', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('spec.js\*', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('controller.js', '77', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('controller.js\*', '77', 'none', 'green', '#151515')
+
+call NERDTreeHighlightFile('spec.js', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('spec.js\*', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('cyp.js', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('cyp.js\*', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('a11y.js', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('a11y.js\*', 'yellow', 'none', 'yellow', '#151515')
+
+call NERDTreeHighlightFile('story.js', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('story.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
+
+call NERDTreeHighlightFile('package.json', 'White', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('package.json\*', 'White', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('package-lock.json', 'White', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('package-lock.json\*', 'White', 'none', '#686868', '#151515')
+
+call NERDTreeHighlightFile('rc', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('rc\*', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('rc.yml', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('rc.yml\*', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('ignore', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('ignore\*', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('config.js', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('config.js\*', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('config.json', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('config.json\*', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('setup.js', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('setup.js\*', 'Gray', 'none', '#686868', '#151515')
 
 " Python-mode
 let g:pymode_lint_write = 0
@@ -105,8 +137,8 @@ let g:syntastic_javascript_eslint_args = "--no-ignore"
 let g:syntastic_error_symbol = '💩'
 let g:syntastic_style_error_symbol = '⁉️'
 let g:syntastic_warning_symbol = '🙀'
-let g:syntastic_style_warning_symbol = '💩'
-let g:syntastic_style_error_symbol = '💩'
+let g:syntastic_style_warning_symbol = '⁉️'
+let g:syntastic_style_error_symbol = '⁉️'
 
 " Tabularize
 nmap <Leader>a= :Tabularize /=\zs<CR>

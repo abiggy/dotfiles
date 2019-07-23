@@ -9,6 +9,7 @@ au BufNewFile,BufRead *.js setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.jsx setlocal ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.es6 set ft=javascript ts=2 sts=2 sw=2 expandtab
 au BufNewFile,BufRead *.json setlocal ts=2 sts=2 sw=2 expandtab
+au BufNewFile,BufRead *.ts set ft=typescript
 au BufNewFile,BufRead *.md set nolist
 au BufNewFile,BufRead *.ml set tw=0 wrapmargin=0 " No automatic line wrapping
 au BufNewFile,BufRead *.otl set ft=vo_base nolist noexpandtab smartindent tw=100
@@ -25,6 +26,7 @@ au BufNewFile,BufRead *.thor set ft=ruby
 au BufNewFile,BufRead *.tt,*.tt2 set ft=tt2html ts=4 sts=4 sw=4 expandtab
 au BufReadPost fugitive://* set bufhidden=delete
 au BufNewFile,BufRead *.less set filetype=less
+
 
 au FileType less set omnifunc=csscomplete#CompleteCSS
 

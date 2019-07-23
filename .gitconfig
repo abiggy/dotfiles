@@ -11,7 +11,7 @@
 
 [core]
     editor = /usr/local/bin/vim
-	excludesfile = ~/.gitignore
+    excludesfile = ~/.gitignore
     attributesfile = ~/.gitattributes
     pager = less -+$LESS -FRX
 
