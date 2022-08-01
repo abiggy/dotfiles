@@ -52,7 +52,7 @@ Bundle 'godlygeek/tabular'
 " Insert-mode autocompletion for quotes, parens, brackets, etc.
 Bundle 'Raimondi/delimitMate'
 " Syntax checking in Vim!
-Bundle 'scrooloose/syntastic'
+" Bundle 'scrooloose/syntastic' " stupidly broken so need it to shut up..
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-endwise'
 " % to match more than just single characters
@@ -164,4 +164,5 @@ Bundle 'neoclide/vim-jsx-improve'
 Bundle 'nathanaelkane/vim-indent-guides'
 
 " Typescript
-Plugin 'leafgarland/typescript-vim'
+" Plugin 'leafgarland/typescript-vim'
+Bundle 'flowtype/vim-flow'

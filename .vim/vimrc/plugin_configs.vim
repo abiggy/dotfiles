@@ -109,7 +109,7 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 " Syntastic
-let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_checkers = ['flow']
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_html_tidy_ignore_errors=[
     \" proprietary attribute \"ng-",

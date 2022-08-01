@@ -6,6 +6,8 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:~/bin:~
 ### Added by the Heroku Toolbelt
 export PATH=/usr/local/heroku/bin:$PATH
 export PATH=./node_modules/.bin:$PATH
+# for python
+export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 # NVM has been slow going to try n
 #export NVM_DIR="$HOME/.nvm"
@@ -90,6 +92,8 @@ alias rg='rg -S --hidden --colors path:fg:cyan --colors path:style:nobold --colo
 # ifconfig only active!
 alias ifconfig2="/sbin/ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 alias ifconfigip="ifconfig2 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+
+alias reload!='exec "$SHELL" -l'
 
 function mkcd() {
     dir="$1"

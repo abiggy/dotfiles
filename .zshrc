@@ -1,6 +1,6 @@
 #!/bin/zsh
 source $HOME/dotfiles/term/term_common.sh
-source $HOME/dotfiles/term/acl_common.sh
+source $HOME/dotfiles/term/fb_common.sh
 
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
@@ -26,16 +26,21 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions vi-mode npm bower z)
+plugins=(git vi-mode npm z)
 
 source $ZSH/oh-my-zsh.sh
+source /usr/local/share/antigen/antigen.zsh
+
+# Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-syntax-highlighting
+# Tell Antigen that you're done.
+antigen apply
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-[[ -n "$SSH_CLIENT" ]] || export DEFAULT_USER="adam_biglow"
+# Make sure this is name of computer to hide the name@computer in the PS
+[[ -n "$SSH_CLIENT" ]] || export DEFAULT_USER="adambiglow"
 
 # From http://dotfiles.org/~_why/.zshrc
 # Sets the window title nicely no matter where you are
@@ -68,8 +73,6 @@ __reload_dotfiles() {
 }
 alias refresh='__reload_dotfiles'
 
-source <(antibody init)
-antibody bundle caarlos0/open-pr
 
 precmd() {
   # sets the tab title to current dir
@@ -138,3 +141,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
+eval "$(pyenv init -)"
+eval "$(pyenv init -)"
+eval "$(pyenv init -)"
+eval "$(pyenv init -)"
+eval "$(pyenv init -)"
+eval "$(pyenv init -)"
+eval "$(pyenv init -)"

@@ -1,11 +1,13 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-source ./term/term_common.sh
-source ./term/acl_common.sh
+source ~/dotfiles/term/term_common.sh
+#source ~/dotfiles/term/acl_common.sh
+source ~/dotfiles/term/fb_common.sh
 
 # If not running interactively, don't do anything
-if [ -n "$PS1" ] ; then
+#:if [ -n "$PS1" ] ; then
 
 export HISTCONTROL=ignoreboth # ignoredups and ignorespace
+# append new entries to the history file rather than overwriting the whole file.
 shopt -s histappend
 
 # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.

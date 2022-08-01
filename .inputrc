@@ -1,0 +1,11 @@
+# This enables briefly highlighting the opening parenthesis/bracket when you type the closing parenthesis/bracket.
+set blink-matching-paren on
+
+# This enables ls-like coloring of directories and executables when listing possibilities for tab-completion.
+set colored-stats on
+
+# This makes tab-completion case-insensitive
+set completion-ignore-case on
+
+# Allows you to paste blobs of text without any characters being interpreted as editing commandsset enable-bracketed-paste on
+set enable-bracketed-paste on
