@@ -21,6 +21,3 @@ alias siphone='cd ~/fbsource && js1 device boot -p ios'
 
 alias sandbox='ssh -6 -o GSSAPIAuthentication=no -o PubkeyAuthentication=no adambiglow.devvm050.vll0.facebook.com'
 alias arcpull='pyenv shell 3.6.8 && arc pull'
-
-# adding my work home brew location to path
-export PATH=$HOME/homebrew/bin:$PATH
