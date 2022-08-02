@@ -1,9 +1,14 @@
 #!/bin/zsh
 source $HOME/dotfiles/term/term_common.sh
-source $HOME/dotfiles/term/fb_common.sh
+# source $HOME/dotfiles/term/fb_common.sh
+
+export PATH=/opt/homebrew/bin:$PATH
 
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
+
+source $ZSH/oh-my-zsh.sh
+source /opt/homebrew/share/antigen/antigen.zsh
 
 export LSCOLORS='exfxcxdxbxegedabagacad'
 export CLICOLOR=true
@@ -27,9 +32,6 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git vi-mode npm z)
-
-source $ZSH/oh-my-zsh.sh
-source /Users/adambiglow/homebrew/share/antigen/antigen.zsh
 
 
 # Syntax highlighting bundle.
@@ -138,7 +140,6 @@ fi
 ###-end-npm-completion-###
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn

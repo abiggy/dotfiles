@@ -113,7 +113,8 @@ endif
 " bind K to grep word under cursor
 nnoremap \A :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwi
+" got error for this already in us
+" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwi
 nnoremap \a :Ag<SPACE>
 
 " Increase and Decrease the splits using shift and direction key.

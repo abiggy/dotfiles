@@ -17,7 +17,7 @@ Bundle 'gmarik/vundle'
 " Easier vim motions. Try <Leader><Leader>w or <Leader><Leader>fo
 Bundle 'Lokaltog/vim-easymotion'
 " Like Command-T or fuzzyfinder. Use to fuzzy find files
-Bundle 'kien/ctrlp.vim'
+Bundle 'ctrlpvim/ctrlp.vim'
 
 " -----------------------
 " --- UI enhancements ---

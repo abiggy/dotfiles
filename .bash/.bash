@@ -1,1 +1,1 @@
-.bash
+/Users/adam/dotfiles/.bash
