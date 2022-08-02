@@ -52,7 +52,7 @@ Bundle 'godlygeek/tabular'
 " Insert-mode autocompletion for quotes, parens, brackets, etc.
 Bundle 'Raimondi/delimitMate'
 " Syntax checking in Vim!
-" Bundle 'scrooloose/syntastic' " stupidly broken so need it to shut up..
+Plugin 'dense-analysis/ale'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-endwise'
 " % to match more than just single characters

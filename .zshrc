@@ -2,6 +2,8 @@
 source $HOME/dotfiles/term/term_common.sh
 source $HOME/dotfiles/term/fb_common.sh
 
+export PATH=$HOME/homebrew/bin:$PATH
+
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -29,7 +31,8 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git vi-mode npm z)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/local/share/antigen/antigen.zsh
+source /Users/adambiglow/homebrew/share/antigen/antigen.zsh
+
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -61,7 +64,7 @@ title() {
   esac
 }
 
-gpr() {
+function gpr {
     git push && open-pr "integration"
 }
 
@@ -141,10 +144,3 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
-eval "$(pyenv init -)"
-eval "$(pyenv init -)"
-eval "$(pyenv init -)"
-eval "$(pyenv init -)"
-eval "$(pyenv init -)"
-eval "$(pyenv init -)"
-eval "$(pyenv init -)"

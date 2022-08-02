@@ -130,15 +130,8 @@ highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
-" dont use project ignore
-let g:syntastic_javascript_eslint_args = "--no-ignore"
-" let g:syntastic_javascript_eslint_args = ""
-"
-let g:syntastic_error_symbol = '💩'
-let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '🙀'
-let g:syntastic_style_warning_symbol = '⁉️'
-let g:syntastic_style_error_symbol = '⁉️'
+" legancy is deprecated so need this line
+let g:snipMate = { 'snippet_version' : 1 }
 
 " Tabularize
 nmap <Leader>a= :Tabularize /=\zs<CR>
