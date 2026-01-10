@@ -27,116 +27,19 @@ let NERDTreeAutoDeleteBuffer = 1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" nerd tree get rid of brackets
-"" after a re-source, fix syntax matching issues (concealing brackets):
-if exists('g:loaded_webdevicons')
-  call webdevicons#refresh()
-endif
-autocmd VimEnter * source ~/.vimrc
-
-
-" NERDTress File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
- exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
- exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-call NERDTreeHighlightFile('js', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('js\*', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('jsx', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('jsx\*', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('es6', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('es6\*', 'green', 'none', 'green', '#151515')
-
-call NERDTreeHighlightFile('Provider.js', 'lightGreen', 'none', '#31B53E', '#151515')
-call NERDTreeHighlightFile('Provider.js\*', 'lightGreen', 'none', '#31B53E', '#151515')
-
-call NERDTreeHighlightFile('html', 'red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('html\*', 'red', 'none', '#ffa500', '#151515')
-
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json\*', 'yellow', 'none', 'yellow', '#151515')
-
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css\*', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('scss', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('scss\*', 'cyan', 'none', 'cyan', '#151515')
-
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('php\*', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('rb', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('rb\*', 'Magenta', 'none', '#ff00ff', '#151515')
-
-call NERDTreeHighlightFile('component.js', '48', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('component.js\*', '48', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('directive.js', '48', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('directive.js\*', '48', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('module.js', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('module.js\*', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('service.js', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('service.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('controller.js', '77', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('controller.js\*', '77', 'none', 'green', '#151515')
-
-call NERDTreeHighlightFile('spec.js', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('spec.js\*', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('cyp.js', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('cyp.js\*', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('a11y.js', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('a11y.js\*', 'yellow', 'none', 'yellow', '#151515')
-
-call NERDTreeHighlightFile('story.js', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('story.js\*', 'Magenta', 'none', '#ff00ff', '#151515')
-
-call NERDTreeHighlightFile('package.json', 'White', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('package.json\*', 'White', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('package-lock.json', 'White', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('package-lock.json\*', 'White', 'none', '#686868', '#151515')
-
-call NERDTreeHighlightFile('rc', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('rc\*', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('rc.yml', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('rc.yml\*', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('ignore', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('ignore\*', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('config.js', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('config.js\*', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('config.json', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('config.json\*', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('setup.js', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('setup.js\*', 'Gray', 'none', '#686868', '#151515')
 
 " Python-mode
 let g:pymode_lint_write = 0
 
 " Rainbow Parentheses
-" Always on
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-" Syntastic
-let g:syntastic_javascript_checkers = ['flow']
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_html_tidy_ignore_errors=[
-    \" proprietary attribute \"ng-",
-    \" proprietary attribute \"acl-"
-\]
-let g:syntastic_sass_checkers=["sass_lint"]
-let g:syntastic_scss_checkers=["scss_lint"]
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_mode="passive"
-nmap <F6> :SyntasticToggleMode<CR>
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
+" Optimized to load only once per buffer instead of on every keypress
+augroup RainbowParams
+  autocmd!
+  autocmd VimEnter * RainbowParenthesesToggle
+  autocmd FileType * RainbowParenthesesLoadRound
+  autocmd FileType * RainbowParenthesesLoadSquare
+  autocmd FileType * RainbowParenthesesLoadBraces
+augroup END
 
 " legancy is deprecated so need this line
 let g:snipMate = { 'snippet_version' : 1 }
@@ -266,3 +169,24 @@ map <leader>, :BufExplorer<CR>
 """"""""""""""""""""""""""""""
 let MRU_Max_Entries = 400
 map <leader>m :MRU<CR>
+
+
+" --- YCM & ALE Harmony ---
+" Turn off YCM's own diagnostic checking so it doesn't overlap with ALE
+let g:ycm_show_diagnostics_ui = 0
+
+" Let ALE handle the heavy lifting for linting
+let g:ale_linters = {
+\   'javascript': ['eslint', 'flow'],
+\   'css': ['csslint'],
+\   'scss': ['sass-lint'],
+\}
+let g:ale_fixers = {
+\   'javascript': ['prettier', 'eslint'],
+\   'css': ['prettier'],
+\}
+" Run lint only on save (optional - helps performance)
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1

@@ -2,8 +2,8 @@
 source $HOME/dotfiles/term/term_common.sh
 source $HOME/dotfiles/term/fb_common.sh
 
-export BREW_HOME=/Users/adambiglow/homebrew
-# export BREW_HOME=/opt/homebrew
+# export BREW_HOME=/Users/adambiglow/homebrew
+export BREW_HOME=/opt/homebrew
 
 # adding my work home brew location to path
 export PATH=$BREW_HOME/bin:$PATH
