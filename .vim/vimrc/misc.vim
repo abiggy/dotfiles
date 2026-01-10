@@ -1,28 +1,42 @@
-" Any miscellaneous things go here
+" ==================================================
+" MISCELLANEOUS SETTINGS
+" ==================================================
 
-" Always jump to last cursor position.
-autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal g`\"" |
-      \ endif
-
-
-" Use a common directory for backups and swp files
-" Create it if it doesn't exist
+" --- Backups & Swap Files ---
+" Keep the directory clean: save all backups/swaps in one place.
+" The 'mkdir' command ensures the folder exists.
 silent execute '!mkdir -p ~/.vim_backups'
-set backupdir=~/.vim_backups/
-set directory=~/.vim_backups/
 
-" Syntax highlighting from start. Slow but better.
-autocmd BufEnter * :syntax sync fromstart
+" Note: The trailing // tells Vim to use the full path in the filename.
+" This prevents 'projectA/index.js' swap overwriting 'projectB/index.js'.
+set backupdir=~/.vim_backups//
+set directory=~/.vim_backups//
+set backup                      " Enable backups
 
-" NeoVim fixes
+" --- Persistence (Viminfo/Shada) ---
 if has('nvim')
-    nmap <BS> <C-W>h
-    set viminfo+=n~/.shada
+  " NeoVim uses Shada (Shared Data)
+  set shada+=n~/.shada
+  " Map Backspace to 'Window Left' (Only in NeoVim as per your snippet)
+  nmap <BS> <C-W>h
 else
-    set viminfo='10,\"100,:20,%,n~/.viminfo    " Use viminfo
+  " Classic Vim uses viminfo
+  " '10  : marks remembered for 10 files
+  " "100 : save up to 100 lines for registers
+  " :20  : command line history
+  " %    : save buffer list
+  set viminfo='10,\"100,:20,%,n~/.viminfo
 endif
 
-" Return to last edit position when opening files (You want this!)
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" --- Auto-Commands ---
+
+" 1. Return to last edit position when opening files
+autocmd BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g'\"" |
+  \ endif
+
+" 2. Syntax Highlighting Accuracy
+" 'fromstart' is extremely slow on large files.
+" 'minlines=200' is a safer balance between speed and accuracy.
+autocmd BufEnter * syntax sync minlines=200

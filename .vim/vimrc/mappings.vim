@@ -1,133 +1,100 @@
-" Various mappings go here
+" ==================================================
+" MAPPINGS & SHORTCUTS
+" ==================================================
 
-" Make it easy to edit .vimrc anytime!
-map <Leader>; :tabe ~/dotfiles<CR>
+" --- Leader Keys ---
+" Note: By default, <Leader> is backslash (\).
+" You can change it to comma or space if you prefer:
+" let mapleader = ","
 
-" Autoclosing braces
-inoremap {<CR> {<CR>}<ESC>O
+" 1. Fast Config Editing
+" Points directly to your .vimrc file (adjust filename if it's not .vimrc)
+map <Leader>; :e ~/.vimrc<CR>
 
-" Clear all trailing spaces
-map <Leader>c :%s/\s\+$//<CR>:nohl<CR>
-
-" Mapping shortcut to remove highlight
+" 2. Clear Search Highlighting (Common & Useful)
 map <Leader><Space> :nohl<CR>
 
-map gb :bnext<cr>
-map gB :bprev<cr>
+" 3. Remove Trailing Whitespace
+map <Leader>c :%s/\s\+$//<CR>:nohl<CR>
 
-" Easier way to save files
-map ZX :w<CR>
+" --- Navigation ---
 
-" Tab to go forward in history, Shift-Tab to go backward.
-nmap <Tab> <C-I>
-nmap <S-Tab> <C-O>
-
-" Easier browsing of long lines
+" Visual Line Motion (Handle wrapped lines naturally)
 noremap <Up> gk
 noremap <Down> gj
 noremap j gj
 noremap k gk
+
+" Line Start/End Improvements
 noremap 0 g0
 noremap ^ g^
 noremap $ g$
-nnoremap C cg$
-nnoremap D dg$
-nnoremap I g^i
-nnoremap A g$a
 
-" For those pesky :W errors...
+" Buffer Switching
+map gb :bnext<CR>
+map gB :bprev<CR>
+
+" Window Movement (Control + H/J/K/L)
+" Note: If <C-H> doesn't work, your terminal might treat it as Backspace.
+nmap <C-H> <C-W>h
+nmap <C-J> <C-W>j
+nmap <C-K> <C-W>k
+nmap <C-L> <C-W>l
+
+" Window Resizing (Arrow keys or +/-)
+nmap <C-w>< 5<C-w><
+nmap <C-w>> 5<C-w>>
+nmap + 5<C-w>+
+nmap _ 5<C-w>-
+
+" --- Editing & Workflow ---
+
+" Stay in Visual Mode when shifting indentation
+vnoremap < <gv
+vnoremap > >gv
+
+" Search & Replace helpers
+" Map Space in Visual Mode to insert at start of line
+vnoremap <Space> I<Space><Esc>gv
+
+" Map F1 to Esc (Prevents accidental Help opening)
+map <F1> <Esc>
+imap <F1> <Esc>
+
+" Common Command Typos (W/Q instead of w/q)
 command! W w
 command! Wq wq
 command! WQ wq
 command! Q q
 
-command! Vsp vsp
-command! Sp sp
+" Sudo Write (Save as root if you forgot sudo)
+command! Wsudo w !sudo tee % > /dev/null
 
-" Better scrolling
-noremap <C-Y> 5<C-Y>
-noremap <C-E> 5<C-E>
+" --- Search Tools (Ag/Grep) ---
+" Uses the 'ag.vim' plugin you installed
+nnoremap <Leader>a :Ag<SPACE>
+" Grep the word under cursor
+nnoremap <Leader>A :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-" map control backspace to delete the previous word, useful in Windows
-imap <C-BS> <C-W>
-
-" Fix that annoying <C-j> imaps mapping problem
-" Something /must/ map to <Plug>IMAP_JumpForward in order to remap <C-j>
-map <C-SPACE> <Plug>IMAP_JumpForward
-
-" Make it easier to move between windows
-nmap <C-H> <C-W>h
-nmap <C-J> <C-W>j
-nmap <C-K> <C-W>k
-nmap <C-L> <C-W>l
-imap <C-H> <Esc><C-W>h
-imap <C-J> <Esc><C-W>j
-imap <C-K> <Esc><C-W>k
-imap <C-L> <Esc><C-W>l
-
-" Easier mappings for resizing windows
-nnoremap <C-w>< 5<C-w><
-nnoremap <C-w>> 5<C-w>>
-nmap + 5<C-w>+
-nmap _ 5<C-w>-
-
-" Make it easier to paste in insert mode
-inoremap PPP <Esc>pa
-
-" While shifting indent, stay in visual mode
-vnoremap < <gv
-vnoremap > >gv
-vnoremap <Space> I<Space><Esc>gv
-
-" Undo and redo in insert mode
-inoremap <C-u> <C-o>u
-inoremap <C-y> <C-o><C-R>
-
-" Emacs style mappings
-inoremap <C-A> <Home>
-inoremap <C-E> <End>
-inoremap <C-D> <Del>
-
-" Make tab switching easier on macs
-if has("mac")
-	nmap <D-1> 1gt
-	nmap <D-2> 2gt
-	nmap <D-3> 3gt
-	nmap <D-4> 4gt
-	nmap <D-5> 5gt
-	nmap <D-6> 6gt
-	nmap <D-7> 7gt
-	nmap <D-8> 8gt
-	nmap <D-9> 9gt
-	imap <D-1> <ESC>1gt
-	imap <D-2> <ESC>2gt
-	imap <D-3> <ESC>3gt
-	imap <D-4> <ESC>4gt
-	imap <D-5> <ESC>5gt
-	imap <D-6> <ESC>6gt
-	imap <D-7> <ESC>7gt
-	imap <D-8> <ESC>8gt
-	imap <D-9> <ESC>9gt
-endif
-
-" bind K to grep word under cursor
-nnoremap \A :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-" bind \ (backward slash) to grep shortcut
-" got error for this already in us
-" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwi
-nnoremap \a :Ag<SPACE>
-
-" Increase and Decrease the splits using shift and direction key.
-nnoremap <S-H> <C-W>>
-nnoremap <S-J> <C-W>-
-nnoremap <S-K> <C-W>+
-nnoremap <S-L> <C-W><
-
-" Set clipboard so can copy.
+" --- Clipboard (Mac) ---
+" Use the system clipboard (*)
 set clipboard=unnamed
+
+" Copy/Paste shortcuts (Windows style, helpful on Mac too)
 vmap <C-c> "+y
 vmap <C-x> "+c
 
-" F1 will map to esc instead of annoying help.
-map <F1> <Esc>
-imap <F1> <Esc>
+" --- Mac Specifics ---
+if has("mac")
+  " Command+Number to switch tabs (MacVim specific)
+  nmap <D-1> 1gt
+  nmap <D-2> 2gt
+  nmap <D-3> 3gt
+  nmap <D-4> 4gt
+  nmap <D-5> 5gt
+  imap <D-1> <ESC>1gt
+  imap <D-2> <ESC>2gt
+  imap <D-3> <ESC>3gt
+  imap <D-4> <ESC>4gt
+  imap <D-5> <ESC>5gt
+endif

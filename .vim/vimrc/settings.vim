@@ -1,56 +1,68 @@
-" All the Vim settings go here!
-
-set autoindent                        " always set autoindenting on
-set autoread                          " Refresh buffer if file has been changed externally. Note that this doesn't automatically run every some interval.
-set autowrite                         " Automatically save before commands like :next
-set backspace=indent,eol,start        " Backspace over everything.
-set cursorline                        " highlight cursor line
-set diffopt+=vertical                 " make gdiff vertical instead of horizontal
+" --- General Settings ---
+set nocompatible             " Disable Vi compatibility
 set encoding=utf8
-set expandtab                         " always uses spaces instead of tab characters
-set foldlevel=20
-"set foldmethod=Syntax                 makes 7.4 almost unusable slow e.g. for js&ruby files
-set foldmethod=indent                 " Works much better for js files. @TODO Slow?
-set nofoldenable                      " disable folding
-set formatoptions=1
-set hidden                            " Keep buffers around after closing them
-set history=50
-set hlsearch
-set ignorecase
-set incsearch                         " search as you type
-set laststatus=2                      " Always show the status line
-set linebreak
-set list                              " show trailing whitespace and tabs
+set shell=/bin/bash          " Use bash for shell commands
+set history=1000             " Increased from 50 (modern machines can handle it)
+set mouse=a                  " Enable mouse in all modes
+
+" --- File Handling ---
+set autoread                 " Reload file if changed externally
+set autowrite                " Auto-save before switching buffers/making tags
+set hidden                   " Allow hiding buffers with unsaved changes
+set backspace=indent,eol,start " Backspace works as expected
+set modelines=1              " Read modelines from files (security limit)
+
+" --- Indentation (Standardized to 2 spaces) ---
+" Note: I changed shiftwidth to 2 to match your tabstop settings
+set expandtab                " Use spaces instead of tabs
+set tabstop=2                " Size of a hard tabstop
+set softtabstop=2            " Simulation of tab width
+set shiftwidth=2             " Size of an indent (<< / >>)
+set autoindent               " Copy indent from previous line
+set smarttab                 " <Tab> uses shiftwidth at start of line
+
+" --- Searching ---
+set hlsearch                 " Highlight search results
+set incsearch                " Jump to result while typing
+set ignorecase               " Ignore case when searching...
+set smartcase                " ...unless capital letters are used
+
+" --- UI & Visuals ---
+set number                   " Show line numbers
+set cursorline               " Highlight the current line
+set ruler                    " Show cursor position
+set showcmd                  " Show incomplete commands in bottom right
+set laststatus=2             " Always show status line
+set visualbell               " Flash screen instead of beeping
+set diffopt+=vertical        " Vertical diffs are better
+
+" --- Whitespace & Wrapping ---
+set list                     " Show invisible characters...
 set listchars=tab:\▸\ ,trail:•,extends:>,precedes:<
-set modelines=1
-set mouse=a
-set noequalalways
-set nowrap                            " Stop wrapping goddamnit
-set number
-set pastetoggle=<F7>
-set ruler
-set scrolljump=3
-set scrolloff=5
-set shell=/bin/bash
-set shiftwidth=4                      " size of an 'indent'
-set shortmess=atI
-set showcmd                           " Display incomplete commands
-set showcmd                           " display commands as they are typed
-set smartcase
-set smarttab                          " make 'tab' insert indents instead of tabs at the beginning of a line
-set softtabstop=2                     " a combination of spaces and tabs are used to simulate tab stops at a width other than the (hard)tabstop
-set splitbelow
-set splitright
-set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P " taken from :help fugitive-statusline
-set tabstop=2                         " size of a hard tabstop
-set tags=./tags;/
-set textwidth=78
-set timeoutlen=250                    " Time to wait after ESC
-set timeoutlen=600
-set ttimeoutlen=50
-set visualbell
-set wildmenu
-set wildmode=list:longest,full        " bash-like command line tab completion
+set nowrap                   " Do not wrap lines
+set linebreak                " Break lines at words (if wrapping is enabled)
+set textwidth=78             " Wrap text at 78 chars (for comments/git)
+
+" --- Folds ---
+set foldmethod=indent        " Fold based on indentation
+set foldlevel=20             " Open all folds by default
+set nofoldenable             " Disable folding at startup
+
+" --- Splits ---
+set splitbelow               " New horizontal splits go below
+set splitright               " New vertical splits go right
+
+" --- Timeouts ---
+" Fixed duplicate timeoutlen entries
+set timeoutlen=600           " Wait 600ms for mapping sequences (e.g. Leader)
+set ttimeoutlen=50           " Wait 50ms for key codes (eliminates ESC lag)
+
+" --- Window Management ---
+" Note: These force active windows to be large. Remove if splits jump too much.
 set winheight=24
 set winwidth=94
-set wrapmargin=2
+set noequalalways            " Don't force equal size windows
+
+" --- Status Line ---
+" REMOVED: set statusline=...
+" Reason: You are using vim-airline plugin, which replaces this.
