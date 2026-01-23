@@ -24,10 +24,6 @@ alias siphone='(cd ~/fbsource && js1 device boot -p ios)'
 
 alias sandroid2='(cd "$FBANDROID_DIR" && ./scripts/start_emulator)'
 
-# Dev Server
-# Note: Hostnames like 'devvm050' often change. Check if this is still your active VM.
-alias sandbox='ssh -6 -o GSSAPIAuthentication=no -o PubkeyAuthentication=no adambiglow.devvm050.vll0.facebook.com'
-
 # Arc Pull
 # Uses PYENV_VERSION so it doesn't get your terminal stuck on Python 3.6.8 permanently
 alias arcpull='PYENV_VERSION=3.6.8 arc pull'
