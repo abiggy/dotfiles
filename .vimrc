@@ -1,6 +1,8 @@
 " Feel free to use!
 set nocompatible
-behave xterm
+if !has('nvim')
+  behave xterm
+endif
 filetype plugin indent on
 syntax on
 
