@@ -1,11 +1,5 @@
 #!/bin/zsh
 
-# --- 1. Proxy / Network Helpers (Critical for Server) ---
-# Must be at the top so git/curl work for subsequent commands
-if command -v fwdproxy-config > /dev/null; then
-  alias git="git $(fwdproxy-config git)"
-  alias curl="curl $(fwdproxy-config curl)"
-fi
 
 # --- 2. Source Common Configs ---
 if [ -f "$HOME/dotfiles/term/term_common.sh" ]; then
@@ -31,7 +25,11 @@ ZSH_THEME="agnoster"
 
 # Plugins
 # Start with the basics safe for everywhere
-plugins=(git vi-mode z)
+plugins=(
+  git
+  vi-mode
+  z
+)
 
 # Add Server-Specific Plugins (if installed via git clone)
 if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then

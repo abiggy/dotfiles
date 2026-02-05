@@ -1,5 +1,12 @@
 # --- Work / Internal Configuration ---
 
+# 1. Proxy / Network Helpers (Critical)
+# Must be at the top so git/curl work for subsequent commands
+if command -v fwdproxy-config > /dev/null; then
+  alias git="git $(fwdproxy-config git)"
+  alias curl="curl $(fwdproxy-config curl)"
+fi
+
 # 1. Variables
 export FBANDROID_DIR="$HOME/fbsource/fbandroid"
 
@@ -53,3 +60,4 @@ fi
 # Retaining your Python version lock. 
 # Note: If arc fails on the server, try removing 'PYENV_VERSION=3.6.8'
 alias arcpull='PYENV_VERSION=3.6.8 arc pull'
+
