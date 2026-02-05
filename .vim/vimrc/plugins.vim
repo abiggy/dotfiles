@@ -5,8 +5,23 @@
 set nocompatible              " Be iMproved, required
 filetype off                  " required
 
+" --- Auto-Install Vundle ---
+" 1. Set the correct, case-sensitive path
+let s:vundle_path = expand('~/.vim/bundle/Vundle.vim')
+
+" 2. If Vundle is missing, clone it automatically
+if !isdirectory(s:vundle_path)
+    echo "Installing Vundle (Fixing missing/case-sensitive repo)..."
+    echo ""
+    silent execute '!git clone https://github.com/VundleVim/Vundle.vim.git ' . s:vundle_path
+endif
+
+" 3. Add to Runtime Path (Using the variable ensures casing matches)
+execute 'set rtp+=' . s:vundle_path
+
+" --- End Fix ---
+
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Let Vundle manage Vundle, required
