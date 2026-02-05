@@ -31,6 +31,9 @@ plugins=(
   z
 )
 
+# Fallback: Force Vi mode even if plugins fail
+bindkey -v
+
 # Add Server-Specific Plugins (if installed via git clone)
 if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
     plugins+=(zsh-syntax-highlighting)
