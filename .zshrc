@@ -1,6 +1,13 @@
 #!/bin/zsh
-## --- Source External Configs ---
-# Load common and work-specific configurations first
+
+# --- 1. Proxy / Network Helpers (Critical for Server) ---
+# Must be at the top so git/curl work for subsequent commands
+if command -v fwdproxy-config > /dev/null; then
+  alias git="git $(fwdproxy-config git)"
+  alias curl="curl $(fwdproxy-config curl)"
+fi
+
+# --- 2. Source Common Configs ---
 if [ -f "$HOME/dotfiles/term/term_common.sh" ]; then
     source "$HOME/dotfiles/term/term_common.sh"
 fi
@@ -9,72 +16,74 @@ if [ -f "$HOME/dotfiles/term/fb_common.sh" ]; then
     source "$HOME/dotfiles/term/fb_common.sh"
 fi
 
-# --- Path Configuration ---
-export BREW_HOME=/opt/homebrew
-export PATH=$BREW_HOME/bin:$PATH
-
-# --- Oh-My-Zsh Configuration ---
+# --- 3. Oh-My-Zsh Configuration ---
 export ZSH=$HOME/.oh-my-zsh
 
 # Colors
-export LSCOLORS='exfxcxdxbxegedabagacad'
+# Linux uses LS_COLORS, Mac uses LSCOLORS (defined in mac_specific)
+if command -v dircolors > /dev/null; then
+    eval "$(dircolors -b)"
+fi
 export CLICOLOR=true
 
 # Theme
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
+
+# Plugins
+# Start with the basics safe for everywhere
+plugins=(git vi-mode z)
+
+# Add Server-Specific Plugins (if installed via git clone)
+if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
+    plugins+=(zsh-syntax-highlighting)
+fi
+if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+    plugins+=(zsh-autosuggestions)
+fi
 
 # Display red dots whilst waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Plugins
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode npm z)
-
-source $ZSH/oh-my-zsh.sh
-
-# --- Antigen (Syntax Highlighting) ---
-if [ -f "$BREW_HOME/share/antigen/antigen.zsh" ]; then
-    source $BREW_HOME/share/antigen/antigen.zsh
-    antigen bundle zsh-users/zsh-syntax-highlighting
-    antigen apply
+# Load OMZ
+if [ -f "$ZSH/oh-my-zsh.sh" ]; then
+    source $ZSH/oh-my-zsh.sh
 fi
 
-# --- SSH & User Settings ---
-# Make sure this is name of computer to hide the name@computer in the PS
+# --- 4. Universal Integrations ---
+
+# FZF (Checks standard Linux/Mac paths)
+if [ -f ~/.fzf.zsh ]; then
+    source ~/.fzf.zsh
+elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+    source /usr/share/doc/fzf/examples/completion.zsh
+fi
+
+# SSH Settings
+# Hides user@hostname in the prompt if you are logged in via SSH
 [[ -n "$SSH_CLIENT" ]] || export DEFAULT_USER="adambiglow"
 
-# --- Functions & Aliases ---
-
-function gpr {
-    git push && open-pr "integration"
+# Tab Titles (Precmd hook)
+precmd() {
+    echo -ne "\e]1;${PWD##*/}\a"
 }
 
+# Reload Helper
 __reload_dotfiles() {
     # Resets PATH to system default to clear cruft before reloading
     PATH="$(command -p getconf PATH):/usr/local/bin"
     source ~/.zshrc
     cd . || return 1
+    echo "Config reloaded."
 }
 alias refresh='__reload_dotfiles'
 
 
-# --- Hooks (Tab Titles) ---
-precmd() {
-    # Sets the tab title to current dir name
-    echo -ne "\e]1;${PWD##*/}\a"
-}
+# --- 5. Mac Loader ---
+# If we are on a Mac (Darwin), load the heavy extras
+if [[ "$(uname)" == "Darwin" ]] && [ -f "$HOME/dotfiles/term/mac_specific.zsh" ]; then
+    source "$HOME/dotfiles/term/mac_specific.zsh"
+fi
 
-# --- Final Integrations ---
-
-# iTerm2 Integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# FZF (Fuzzy Finder)
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# AVN (Automatic Version Switching for Node)
-[[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh"
+# Force clean exit code
+true
