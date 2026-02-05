@@ -61,3 +61,5 @@ fi
 # Note: If arc fails on the server, try removing 'PYENV_VERSION=3.6.8'
 alias arcpull='PYENV_VERSION=3.6.8 arc pull'
 
+alias python=python3
+

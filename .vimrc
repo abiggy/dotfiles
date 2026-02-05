@@ -1,4 +1,3 @@
-" Brandon Liu's .vimrc
 " Feel free to use!
 set nocompatible
 behave xterm
