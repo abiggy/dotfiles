@@ -16,7 +16,7 @@ export PYTHONSTARTUP=~/.pystartup
 # --- PATH Configuration ---
 
 # 1. Start with system paths
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 # 2. Add User and Dotfile binaries
 export PATH=~/bin:~/opt/bin:$DOTFILES/bin:$PATH
