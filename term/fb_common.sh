@@ -25,12 +25,15 @@ export ANDROID_NDK_REPOSITORY="$ANDROID_NDK"
 # Add Android Tools
 export PATH="$PATH:$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/tools/bin:$ANDROID_SDK/platform-tools"
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # --- CHECK: Only add if paths exist ---
 if [ -d "/opt/facebook" ]; then
     export PATH=${PATH}:/opt/bin/facebook
     export PATH=${PATH}:/opt/facebook/hg/bin
     export PATH=${PATH}:/opt/facebook/bin/
     export PATH=${PATH}:/var/www/scripts/bin/
+
 fi
 
 # --- Arcanist (arc) Completion ---
