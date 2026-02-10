@@ -20,6 +20,9 @@ if command -v dircolors > /dev/null; then
 fi
 export CLICOLOR=true
 
+# Force "Strict" sorting (Put dotfiles first, like Mac)
+export LC_COLLATE=C
+
 # Theme
 ZSH_THEME="agnoster"
 
