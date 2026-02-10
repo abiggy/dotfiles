@@ -75,3 +75,7 @@ alias python3='fbpython'
 # Make "pip" always install into fbpython's library
 alias pip='fbpython -m pip'
 
+# Aliases need for pip
+export http_proxy="http://fwdproxy:8080"
+export https_proxy="http://fwdproxy:8080"
+export no_proxy=".fbcdn.net,.facebook.com,.thefacebook.com,.tfbnw.net,.fb.com,.fburl.com,.facebook.net,.sb.fbsbx.com,localhost"
