@@ -1,11 +1,5 @@
 # --- Work / Internal Configuration ---
 
-# 1. Proxy / Network Helpers (Critical)
-# Must be at the top so git/curl work for subsequent commands
-if command -v fwdproxy-config > /dev/null; then
-  alias git="git $(fwdproxy-config git)"
-  alias curl="curl $(fwdproxy-config curl)"
-fi
 
 # 1. Variables
 export FBANDROID_DIR="$HOME/fbsource/fbandroid"
@@ -75,7 +69,18 @@ alias python3='fbpython'
 # Make "pip" always install into fbpython's library
 alias pip='fbpython -m pip'
 
-# Aliases need for pip
-export http_proxy="http://fwdproxy:8080"
-export https_proxy="http://fwdproxy:8080"
-export no_proxy=".fbcdn.net,.facebook.com,.thefacebook.com,.tfbnw.net,.fb.com,.fburl.com,.facebook.net,.sb.fbsbx.com,localhost"
+if [ -f "/etc/hostname" ] && (grep -q "\.od$\|\.ftw\|\.prn\|\.ash\|\.facebook\.com" /etc/hostname 2>/dev/null || [ -d "/opt/facebook" ]); then
+  # We're on OnDemand or Devserver - use fwdproxy
+
+  # 1. Proxy / Network Helpers (Critical)
+  # Must be at the top so git/curl work for subsequent commands
+  if command -v fwdproxy-config > /dev/null; then
+    alias git="git $(fwdproxy-config git)"
+    alias curl="curl $(fwdproxy-config curl)"
+    fi
+    # Set proxy environment variables for OnDemand/Devserver
+    export http_proxy="http://fwdproxy:8080"
+    export https_proxy="http://fwdproxy:8080"
+    export no_proxy=".fbcdn.net,.facebook.com,.thefacebook.com,.tfbnw.net,.fb.com,.fburl.com,.facebook.net,.sb.fbsbx.com,localhost"
+fi
+

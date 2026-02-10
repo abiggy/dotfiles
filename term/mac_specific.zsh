@@ -34,6 +34,7 @@ fi
 # Mac Specific Paths
 export PATH=/usr/local/heroku/bin:$PATH
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
+export PATH="$HOME/Library/Python/3.14/bin:$PATH"
 
 # Google (Uses 'open', which is Mac only)
 function google() {
