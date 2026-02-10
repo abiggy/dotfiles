@@ -68,4 +68,8 @@ fi
 alias arcpull='PYENV_VERSION=3.6.8 arc pull'
 
 alias python=python3
+# Force "pip" to always mean "pip3" on the server
+if command -v pip3 > /dev/null; then
+    alias pip='pip3'
+fi
 
