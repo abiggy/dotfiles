@@ -67,9 +67,11 @@ fi
 # Note: If arc fails on the server, try removing 'PYENV_VERSION=3.6.8'
 alias arcpull='PYENV_VERSION=3.6.8 arc pull'
 
-alias python=python3
-# Force "pip" to always mean "pip3" on the server
-if command -v pip3 > /dev/null; then
-    alias pip='pip3'
-fi
+# --- Facebook Python Setup ---
+# Force everything to use fbpython (Modern) instead of system python (Old)
+alias python='fbpython'
+alias python3='fbpython'
+
+# Make "pip" always install into fbpython's library
+alias pip='fbpython -m pip'
 
