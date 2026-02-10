@@ -25,7 +25,10 @@ export ANDROID_NDK_REPOSITORY="$ANDROID_NDK"
 # Add Android Tools
 export PATH="$PATH:$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/tools/bin:$ANDROID_SDK/platform-tools"
 
-export PATH="$HOME/.local/bin:$PATH"
+# Fix pip user installs (required for Neovim/YCM on Linux)
+if [ -d "$HOME/.local/bin" ]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # --- CHECK: Only add if paths exist ---
 if [ -d "/opt/facebook" ]; then
