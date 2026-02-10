@@ -34,14 +34,6 @@ plugins=(
 # Fallback: Force Vi mode even if plugins fail
 bindkey -v
 
-# Add Server-Specific Plugins (if installed via git clone)
-if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
-    plugins+=(zsh-syntax-highlighting)
-fi
-if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
-    plugins+=(zsh-autosuggestions)
-fi
-
 # Display red dots whilst waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
@@ -84,6 +76,19 @@ alias refresh='__reload_dotfiles'
 # If we are on a Mac (Darwin), load the heavy extras
 if [[ "$(uname)" == "Darwin" ]] && [ -f "$HOME/dotfiles/term/mac_specific.zsh" ]; then
     source "$HOME/dotfiles/term/mac_specific.zsh"
+fi
+
+# --- Finalize ---
+# Load these LAST (Must be after FZF and all other plugins)
+
+# 1. Auto Suggestions (Grey text completions)
+if [ -f "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+
+# 2. Syntax Highlighting (Must be the absolute final thing)
+if [ -f "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 # Force clean exit code
