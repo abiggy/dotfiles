@@ -92,7 +92,6 @@ alias cd..='cd ..'
 # Git
 alias gco.='gco .'
 alias ga.='ga .'
-alias gc
 
 # Grep fixes
 alias grep='grep --color=auto'
