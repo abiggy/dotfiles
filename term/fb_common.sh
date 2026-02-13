@@ -56,6 +56,9 @@ else
 
 fi
 
+alias www='cd /data/sandcastle/boxes/fbsource/www'
+alias fbsource='cd /data/sandcastle/boxes/fbsource'
+
 # Arc Pull
 # Retaining your Python version lock. 
 # Note: If arc fails on the server, try removing 'PYENV_VERSION=3.6.8'
