@@ -86,3 +86,5 @@ if [ -f "/etc/hostname" ] && (grep -q "\.od\|\.ftw\|\.prn\|\.ash\|\.facebook\.co
   export no_proxy=".fbcdn.net,.facebook.com,.thefacebook.com,.tfbnw.net,.fb.com,.fburl.com,.facebook.net,.sb.fbsbx.com,localhost"
 fi
 
+# automatically try to set claude mode
+alias claude="command claude --model \"opus[1m]\""
