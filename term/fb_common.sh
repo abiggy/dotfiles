@@ -88,3 +88,5 @@ fi
 
 # automatically try to set claude mode
 alias claude="command claude --model \"opus[1m]\""
+# alias claude="command claude --model \"opus[1m]\" --dangerously-skip-permissions"
+alias cc="claude"
