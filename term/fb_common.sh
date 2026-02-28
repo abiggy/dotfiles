@@ -87,7 +87,7 @@ if [ -f "/etc/hostname" ] && (grep -q "\.od\|\.ftw\|\.prn\|\.ash\|\.facebook\.co
 fi
 
 # automatically try to set claude mode
-alias claude="command claude --model \"Opus (1M context)\""
+alias claude="command claude --model \"opus-4-6[1m]\""
 # alias claude="command claude --model \"opus[1m]\" --dangerously-skip-permissions"
 alias cc="claude"
 
