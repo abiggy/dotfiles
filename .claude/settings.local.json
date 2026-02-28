@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(while read f)",
+      "Bash(do python3 -c \"import json; d=json.load\\(open\\(''$f''\\)\\); h=d.get\\(''hooks'',{}\\); print\\(''$f:'', json.dumps\\(h, indent=2\\)\\) if h else None\")",
+      "Bash(done)"
+    ]
+  }
+}

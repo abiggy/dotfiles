@@ -87,6 +87,15 @@ if [ -f "/etc/hostname" ] && (grep -q "\.od\|\.ftw\|\.prn\|\.ash\|\.facebook\.co
 fi
 
 # automatically try to set claude mode
-alias claude="command claude --model \"opus[1m]\""
+alias claude="command claude --model \"Opus (1M context)\""
 # alias claude="command claude --model \"opus[1m]\" --dangerously-skip-permissions"
 alias cc="claude"
+
+# PARA workspace
+export PARA_MODE="local"
+export PARA_ROOT="/Users/adambiglow/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude"
+alias para='cd "$PARA_ROOT" && claude'
+
+# Claude people plugin
+export META_CLAUDE_USE_GCP_DIRECT=1
+CLAUDE_CODE_ENABLE_TELEMETRY=0
