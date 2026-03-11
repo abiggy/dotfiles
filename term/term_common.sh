@@ -88,6 +88,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cd..='cd ..'
+alias cd~='cd ~'
 
 # Git
 alias gco.='gco .'
