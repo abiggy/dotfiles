@@ -60,8 +60,13 @@ fi
 [[ -n "$SSH_CLIENT" ]] || export DEFAULT_USER="adambiglow"
 
 # Tab Titles (Precmd hook)
+# Respects sticky titles set via `tab` command; falls back to current dir
 precmd() {
-    echo -ne "\e]1;${PWD##*/}\a"
+    if [[ -n "$__ITERM_STICKY_TITLE" ]]; then
+        echo -ne "\e]1;${__ITERM_STICKY_TITLE}\a"
+    else
+        echo -ne "\e]1;${PWD##*/}\a"
+    fi
 }
 
 # Reload Helper

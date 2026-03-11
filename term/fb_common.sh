@@ -92,11 +92,6 @@ alias claude='command claude --model "claude-opus-4-6[1m]" --dangerously-skip-pe
 # alias claude="command claude --model \"opus[1m]\" --dangerously-skip-permissions"
 alias cc="claude"
 
-# PARA workspace
-export PARA_MODE="local"
-export PARA_ROOT="/Users/adambiglow/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude"
-alias para='cd "$PARA_ROOT" && claude'
-
 # Claude people plugin
 export META_CLAUDE_USE_GCP_DIRECT=1
 export CLAUDE_CODE_ENABLE_TELEMETRY=0
