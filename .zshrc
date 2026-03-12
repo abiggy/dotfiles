@@ -80,13 +80,7 @@ __reload_dotfiles() {
 alias refresh='__reload_dotfiles'
 
 
-# --- 5. Mac Loader ---
-# If we are on a Mac (Darwin), load the heavy extras
-if [[ "$(uname)" == "Darwin" ]] && [ -f "$HOME/dotfiles/term/mac_specific.zsh" ]; then
-    source "$HOME/dotfiles/term/mac_specific.zsh"
-fi
-
-# --- 6. Claude Mode Commands ---
+# --- 5. Claude Mode Commands ---
 # - claude (from fbsource): Lean coding mode (default)
 # - para: Strategy mode (full PARA context)
 # - ccoding: Coding conventions context (for planning implementations)
@@ -125,6 +119,13 @@ ccoding() {
   fi
   cd "$CLAUDE_CODING_DIR" && claude "$@"
 }
+
+# --- 6. Mac Loader ---
+# If we are on a Mac (Darwin), load the heavy extras
+# Loads AFTER Claude commands so mac_specific.zsh can override (e.g. add tab labeling)
+if [[ "$(uname)" == "Darwin" ]] && [ -f "$HOME/dotfiles/term/mac_specific.zsh" ]; then
+    source "$HOME/dotfiles/term/mac_specific.zsh"
+fi
 
 # --- Finalize ---
 # Load these LAST (Must be after FZF and all other plugins)
