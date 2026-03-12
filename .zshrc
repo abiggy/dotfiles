@@ -101,28 +101,59 @@ else
 fi
 CLAUDE_CODING_DIR="$CLAUDE_PARA_DIR/03_resources/coding"
 
-# Ensure Claude PARA symlinks exist (dotsync2 can't sync folder symlinks)
-# Only runs if gdrive is mounted and targets exist
-if [ -d "$CLAUDE_CODING_DIR" ]; then
-  [[ -L "$HOME/.claude/CLAUDE.md" ]] || ln -sfn "$CLAUDE_CODING_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md" 2>/dev/null
-  [[ -L "$HOME/.claude/plans" ]]    || ln -sfn "$CLAUDE_CODING_DIR/plans" "$HOME/.claude/plans" 2>/dev/null
-fi
+# Wait for gdrive mount if it's not ready yet (race with auto-mount.sh).
+# Polls /proc/mounts (safe, no FUSE touch) then verifies with a capped ls.
+_wait_for_gdrive() {
+  # Already accessible? Skip.
+  if timeout 2 ls "$CLAUDE_PARA_DIR" >/dev/null 2>&1; then
+    return 0
+  fi
+  # Poll up to 10s for mount to appear
+  for _i in 1 2 3 4 5 6 7 8 9 10; do
+    if grep -qF " $CLAUDE_PARA_DIR fuse" /proc/mounts 2>/dev/null && \
+       timeout 2 ls "$CLAUDE_PARA_DIR" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+  done
+  unset _i
+  return 1
+}
+
+# Ensure Claude PARA symlinks exist (called lazily, not at load time)
+_ensure_para_symlinks() {
+  if [ -d "$CLAUDE_CODING_DIR" ]; then
+    [[ -L "$HOME/.claude/CLAUDE.md" ]] || ln -sfn "$CLAUDE_CODING_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md" 2>/dev/null
+    [[ -L "$HOME/.claude/plans" ]]    || ln -sfn "$CLAUDE_CODING_DIR/plans" "$HOME/.claude/plans" 2>/dev/null
+  fi
+}
+
+# Try symlinks eagerly (instant, no-op if mount isn't ready yet)
+_ensure_para_symlinks
 
 para() {
   if [ ! -d "$CLAUDE_PARA_DIR" ]; then
-    echo "Error: Google Drive not mounted at $CLAUDE_PARA_DIR"
-    echo "Run: /gdrive-setup or mount manually"
-    return 1
+    echo "Waiting for Google Drive mount..." >&2
+    if ! _wait_for_gdrive; then
+      echo "Error: Google Drive not mounted at $CLAUDE_PARA_DIR"
+      echo "Run: /gdrive-setup or mount manually"
+      return 1
+    fi
   fi
+  _ensure_para_symlinks
   cd "$CLAUDE_PARA_DIR" && claude "$@"
 }
 
 ccoding() {
   if [ ! -d "$CLAUDE_CODING_DIR" ]; then
-    echo "Error: Coding context not found at $CLAUDE_CODING_DIR"
-    echo "Is Google Drive mounted?"
-    return 1
+    echo "Waiting for Google Drive mount..." >&2
+    if ! _wait_for_gdrive; then
+      echo "Error: Coding context not found at $CLAUDE_CODING_DIR"
+      echo "Is Google Drive mounted?"
+      return 1
+    fi
   fi
+  _ensure_para_symlinks
   cd "$CLAUDE_CODING_DIR" && claude "$@"
 }
 
