@@ -1,26 +1,4 @@
-#Current symlinks in ~/.claude/:                                                                                                   
-                                                                                                                                    
-  ┌─────────────────────┬────────────────────────────────────────┐                                                                  
-  │       Symlink       │                 Target                 │                                                                  
-  ├─────────────────────┼────────────────────────────────────────┤                                                                  
-  │ ~/.claude/CLAUDE.md │ ~/gdrive/03_resources/coding/CLAUDE.md │                                                                  
-  ├─────────────────────┼────────────────────────────────────────┤                                                                  
-  │ ~/.claude/plans     │ ~/gdrive/03_resources/coding/plans     │
-  └─────────────────────┴────────────────────────────────────────┘
-
-  That's it — just those two. Everything else in ~/.claude/ is real files/directories (settings.json, projects/, history.jsonl,
-  etc.).Current symlinks in ~/.claude/:                                                                                                   
-                                                                                                                                    
-  ┌─────────────────────┬────────────────────────────────────────┐                                                                  
-  │       Symlink       │                 Target                 │                                                                  
-  ├─────────────────────┼────────────────────────────────────────┤                                                                  
-  │ ~/.claude/CLAUDE.md │ ~/gdrive/03_resources/coding/CLAUDE.md │                                                                  
-  ├─────────────────────┼────────────────────────────────────────┤                                                                  
-  │ ~/.claude/plans     │ ~/gdrive/03_resources/coding/plans     │
-  └─────────────────────┴────────────────────────────────────────┘
-
-  That's it — just those two. Everything else in ~/.claude/ is real files/directories (settings.json, projects/, history.jsonl,
-  etc.).!/usr/bin/env bash
+#!/usr/bin/env bash
 
 set -e
 
