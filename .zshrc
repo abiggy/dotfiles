@@ -80,6 +80,12 @@ __reload_dotfiles() {
 alias refresh='__reload_dotfiles'
 
 
+# --- 4.5. Google Drive Auto-Mount (OD only) ---
+if [[ "$(uname)" != "Darwin" ]]; then
+  [[ -f "$HOME/.claude/gdrive-mount-scripts/auto-mount.sh" ]] && source "$HOME/.claude/gdrive-mount-scripts/auto-mount.sh"
+  [[ -f "$HOME/.claude/gdrive-mount-scripts/vscode-workspace.sh" ]] && source "$HOME/.claude/gdrive-mount-scripts/vscode-workspace.sh"
+fi
+
 # --- 5. Claude Mode Commands ---
 # - claude (from fbsource): Lean coding mode (default)
 # - para: Strategy mode (full PARA context)
