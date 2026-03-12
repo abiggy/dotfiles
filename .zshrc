@@ -86,6 +86,39 @@ if [[ "$(uname)" == "Darwin" ]] && [ -f "$HOME/dotfiles/term/mac_specific.zsh" ]
     source "$HOME/dotfiles/term/mac_specific.zsh"
 fi
 
+# --- 6. Claude Mode Commands ---
+# - claude (from fbsource): Lean coding mode (default)
+# - para: Strategy mode (full PARA context)
+# - ccoding: Coding conventions context (for planning implementations)
+#
+# Gdrive path differs by platform:
+#   OD:  ~/gdrive/
+#   Mac: ~/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/
+if [[ "$(uname)" == "Darwin" ]]; then
+  CLAUDE_PARA_DIR="$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude"
+else
+  CLAUDE_PARA_DIR="$HOME/gdrive"
+fi
+CLAUDE_CODING_DIR="$CLAUDE_PARA_DIR/03_resources/coding"
+
+para() {
+  if [ ! -d "$CLAUDE_PARA_DIR" ]; then
+    echo "Error: Google Drive not mounted at $CLAUDE_PARA_DIR"
+    echo "Run: /gdrive-setup or mount manually"
+    return 1
+  fi
+  cd "$CLAUDE_PARA_DIR" && claude "$@"
+}
+
+ccoding() {
+  if [ ! -d "$CLAUDE_CODING_DIR" ]; then
+    echo "Error: Coding context not found at $CLAUDE_CODING_DIR"
+    echo "Is Google Drive mounted?"
+    return 1
+  fi
+  cd "$CLAUDE_CODING_DIR" && claude "$@"
+}
+
 # --- Finalize ---
 # Load these LAST (Must be after FZF and all other plugins)
 

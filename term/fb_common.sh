@@ -12,7 +12,7 @@ export ANDROID_SDK_ROOT="$ANDROID_HOME"
 
 # NDK Configuration
 export ANDROID_NDK="/opt/android_ndk"
-export ANDROID_NDK_REPOSITORY="$ANDROID_NDK" 
+export ANDROID_NDK_REPOSITORY="$ANDROID_NDK"
 
 # 2. Work Paths
 
@@ -60,7 +60,7 @@ alias www='cd /data/sandcastle/boxes/fbsource/www'
 alias fbsource='cd /data/sandcastle/boxes/fbsource'
 
 # Arc Pull
-# Retaining your Python version lock. 
+# Retaining your Python version lock.
 # Note: If arc fails on the server, try removing 'PYENV_VERSION=3.6.8'
 alias arcpull='PYENV_VERSION=3.6.8 arc pull'
 
