@@ -101,6 +101,13 @@ else
 fi
 CLAUDE_CODING_DIR="$CLAUDE_PARA_DIR/03_resources/coding"
 
+# Ensure Claude PARA symlinks exist (dotsync2 can't sync folder symlinks)
+# Only runs if gdrive is mounted and targets exist
+if [ -d "$CLAUDE_CODING_DIR" ]; then
+  [[ -L "$HOME/.claude/CLAUDE.md" ]] || ln -sfn "$CLAUDE_CODING_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md" 2>/dev/null
+  [[ -L "$HOME/.claude/plans" ]]    || ln -sfn "$CLAUDE_CODING_DIR/plans" "$HOME/.claude/plans" 2>/dev/null
+fi
+
 para() {
   if [ ! -d "$CLAUDE_PARA_DIR" ]; then
     echo "Error: Google Drive not mounted at $CLAUDE_PARA_DIR"
