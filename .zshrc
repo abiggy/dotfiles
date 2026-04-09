@@ -122,6 +122,9 @@ _ensure_gdrive_mount() {
   fi
 }
 
+alias cdpara='cd "$CLAUDE_PARA_DIR"'
+alias vimpara='vim "$CLAUDE_PARA_DIR"'
+
 para() {
   _ensure_gdrive_mount || return 1
 
@@ -162,6 +165,22 @@ ccoding() {
   fi
 
   claude "$@"
+}
+
+# Team PARA — shared team context for Claude Code (Shared Drive)
+if [[ "$(uname)" == "Darwin" ]]; then
+  TEAM_PARA_DIR="$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/Shared drives/🧠 Nonprofit Fundraising - Team Brain"
+else
+  TEAM_PARA_DIR="$HOME/gdrive-team"
+fi
+
+teampara() {
+  if [ ! -d "$TEAM_PARA_DIR" ]; then
+    echo "Error: Team PARA not found at $TEAM_PARA_DIR"
+    echo "Add the shared Google Drive folder to your Drive first."
+    return 1
+  fi
+  cd "$TEAM_PARA_DIR" && claude "$@"
 }
 
 # --- 6. Mac Loader ---

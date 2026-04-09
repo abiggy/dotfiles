@@ -136,7 +136,7 @@ function devai() {
 # PARA workspace — auto-labels tab blue
 # Uses CLAUDE_PARA_DIR from .zshrc (handles Mac vs OD paths)
 export PARA_MODE="local"
-alias cdpara='cd "$CLAUDE_PARA_DIR"'
+# cdpara and vimpara defined in .zshrc (shared across Mac + OD)
 function para() {
     tab "📋 PARA" blue
     cd "$CLAUDE_PARA_DIR" && claude
@@ -150,23 +150,63 @@ function cc() {
 
 # Shell + native tmux tabs on OD — browse files, vim, run cc when ready
 # OD tmux windows become real iTerm tabs via -CC
-# Usage: devcc 236207.od           # connect with native tabs
-#        devcc devvm39256           # works with devservers too
+# SSH into any remote box (OD or devserver) with native iTerm tmux tabs
+# Usage: devssh 236207.od           # connect to OD
+#        devssh devvm5292            # connect to devserver
 # Requires: iTerm2 Settings > General > tmux > "Use tmux integration" enabled
-function devcc() {
+function devssh() {
     if [[ -z "$1" ]]; then
-        echo "Usage: devcc <hostname>"
-        echo "  e.g. devcc 236207.od"
-        echo "  e.g. devcc devvm39256.prn0.facebook.com"
+        echo "Usage: devssh <hostname>"
+        echo "  e.g. devssh 236207.od"
+        echo "  e.g. devssh devvm5292.scu0.facebook.com"
         return 1
     fi
     tab "🖥️ $1" green
     dev connect -n "$1" --et -- tmux -CC new-session -A -s main
 }
 
-# Quick connect to static devserver with native iTerm tmux tabs
+# Quick SSH to permanent devserver
 # Change MY_DEVSERVER if you get a new permanent devserver
-MY_DEVSERVER="devvm39256.prn0.facebook.com"
+MY_DEVSERVER="devvm5292.scu0.facebook.com"
 function devserver() {
-    devcc "$MY_DEVSERVER"
+    devssh "$MY_DEVSERVER"
+}
+alias devcc='devssh'  # backward compat
+
+uie-it-all() {
+  local od="${1:?Usage: uie-it-all <od-number>}"
+  pkill uie-companion-local 2>/dev/null
+  uie-companion cleanup 2>/dev/null
+  # Clear stale Flipper ports from all booted simulators
+  for udid in $(xcrun simctl list devices booted -j | python3 -c "import sys,json; [print(d['udid']) for ds in json.load(sys.stdin)['devices'].values() for d in ds if d['state']=='Booted']" 2>/dev/null); do
+    xcrun simctl spawn "$udid" defaults delete "Apple Global Domain" "com.facebook.flipper.ports" 2>/dev/null
+  done
+  uie-companion auth "${od}.fbinfra.net"
+  # Connect sim + set up Flipper + restart app to pick up new ports
+  echo "Connecting simulator..."
+  if uie-companion ios sim-connect "${od}.fbinfra.net" 2>/dev/null; then
+    echo "Setting up Flipper..."
+    uie-companion ios flipper-connect "${od}.fbinfra.net" 2>/dev/null
+    # Restart app so it reads the new Flipper port config
+    local app_udid=$(uie-companion ios list-targets 2>/dev/null | grep "Booted" | head -1 | grep -oE '[A-F0-9-]{36}')
+    if [[ -n "$app_udid" ]]; then
+      xcrun simctl terminate "$app_udid" com.burbn.barcelona.localDevelopment 2>/dev/null
+      xcrun simctl launch "$app_udid" com.burbn.barcelona.localDevelopment 2>/dev/null
+      echo "Flipper ready — app restarted with fresh ports."
+    fi
+  else
+    echo "No booted simulator found. Run again after sim is booted, or use: uie-flipper ${od}"
+  fi
+}
+
+# Run standalone after sim is connected (if uie-it-all didn't catch it)
+uie-flipper() {
+  local od="${1:?Usage: uie-flipper <od-number>}"
+  uie-companion ios flipper-connect "${od}.fbinfra.net"
+  local app_udid=$(uie-companion ios list-targets 2>/dev/null | grep "Booted" | head -1 | grep -oE '[A-F0-9-]{36}')
+  if [[ -n "$app_udid" ]]; then
+    xcrun simctl terminate "$app_udid" com.burbn.barcelona.localDevelopment 2>/dev/null
+    xcrun simctl launch "$app_udid" com.burbn.barcelona.localDevelopment 2>/dev/null
+    echo "Flipper ready — app restarted with fresh ports."
+  fi
 }
