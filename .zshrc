@@ -60,13 +60,8 @@ fi
 [[ -n "$SSH_CLIENT" ]] || export DEFAULT_USER="adambiglow"
 
 # Tab Titles (Precmd hook)
-# Respects sticky titles set via `tab` command; falls back to current dir
 precmd() {
-    if [[ -n "$__ITERM_STICKY_TITLE" ]]; then
-        echo -ne "\e]1;${__ITERM_STICKY_TITLE}\a"
-    else
-        echo -ne "\e]1;${PWD##*/}\a"
-    fi
+    echo -ne "\e]1;${PWD##*/}\a"
 }
 
 # Reload Helper
@@ -101,25 +96,6 @@ else
 fi
 CLAUDE_CODING_DIR="$CLAUDE_PARA_DIR/03_resources/coding"
 
-# Wait for gdrive mount if it's not ready yet (race with auto-mount.sh).
-# Polls /proc/mounts (safe, no FUSE touch) then verifies with a capped ls.
-_wait_for_gdrive() {
-  # Already accessible? Skip.
-  if timeout 2 ls "$CLAUDE_PARA_DIR" >/dev/null 2>&1; then
-    return 0
-  fi
-  # Poll up to 10s for mount to appear
-  for _i in 1 2 3 4 5 6 7 8 9 10; do
-    if grep -qF " $CLAUDE_PARA_DIR fuse" /proc/mounts 2>/dev/null && \
-       timeout 2 ls "$CLAUDE_PARA_DIR" >/dev/null 2>&1; then
-      return 0
-    fi
-    sleep 1
-  done
-  unset _i
-  return 1
-}
-
 # Ensure Claude PARA symlinks exist (called lazily, not at load time)
 _ensure_para_symlinks() {
   if [ -d "$CLAUDE_CODING_DIR" ]; then
@@ -131,30 +107,61 @@ _ensure_para_symlinks() {
 # Try symlinks eagerly (instant, no-op if mount isn't ready yet)
 _ensure_para_symlinks
 
-para() {
-  if [ ! -d "$CLAUDE_PARA_DIR" ]; then
-    echo "Waiting for Google Drive mount..." >&2
-    if ! _wait_for_gdrive; then
-      echo "Error: Google Drive not mounted at $CLAUDE_PARA_DIR"
-      echo "Run: /gdrive-setup or mount manually"
+# Mount helper for Linux ODs. Attempts mount once, no wait loop.
+_ensure_gdrive_mount() {
+  [[ "$(uname)" == "Darwin" ]] && return 0  # Mac uses Google Drive for Desktop
+  if ! grep -qF " ${HOME}/gdrive fuse" /proc/mounts 2>/dev/null; then
+    echo "Mounting Google Drive..."
+    if [[ -f "$HOME/bin/gdrive-mount.sh" ]]; then
+      bash "$HOME/bin/gdrive-mount.sh" 2>&1
+    else
+      echo "Error: ~/bin/gdrive-mount.sh not found."
+      echo "Fix: run /gdrive-setup inside a plain 'claude' session."
       return 1
     fi
+  fi
+}
+
+para() {
+  _ensure_gdrive_mount || return 1
+
+  if [[ ! -d "$CLAUDE_PARA_DIR" ]] || ! timeout 3 ls "$CLAUDE_PARA_DIR" >/dev/null 2>&1; then
+    echo "Error: Google Drive not mounted or not responding at $CLAUDE_PARA_DIR"
+    echo "Try: fusermount -uz ~/gdrive && bash ~/bin/gdrive-mount.sh"
+    return 1
   fi
   _ensure_para_symlinks
   cd "$CLAUDE_PARA_DIR" && claude "$@"
 }
 
 ccoding() {
-  if [ ! -d "$CLAUDE_CODING_DIR" ]; then
-    echo "Waiting for Google Drive mount..." >&2
-    if ! _wait_for_gdrive; then
-      echo "Error: Coding context not found at $CLAUDE_CODING_DIR"
-      echo "Is Google Drive mounted?"
-      return 1
-    fi
-  fi
+  # Ensure gdrive is mounted and ~/.claude/CLAUDE.md symlink resolves
+  # BEFORE launching claude. Fails hard — never launches without context.
+  local claude_md="$HOME/.claude/CLAUDE.md"
+
+  _ensure_gdrive_mount || return 1
   _ensure_para_symlinks
-  cd "$CLAUDE_CODING_DIR" && claude "$@"
+
+  # Gate: symlink must resolve to a real file.
+  if [[ ! -f "$claude_md" ]]; then
+    echo ""
+    echo "Error: $claude_md does not resolve."
+    echo ""
+    echo "Diagnostics:"
+    ls -la "$claude_md" 2>&1 | sed 's/^/  /'
+    if [[ "$(uname)" != "Darwin" ]]; then
+      echo "  mount: $(grep -cF " ${HOME}/gdrive fuse" /proc/mounts 2>/dev/null || echo 0) fuse entries"
+      timeout 3 ls "$HOME/gdrive/" >/dev/null 2>&1 && echo "  ls ~/gdrive/: OK" || echo "  ls ~/gdrive/: FAILED (mount may be stale)"
+    fi
+    echo ""
+    echo "Try:"
+    echo "  1. fusermount -uz ~/gdrive && bash ~/bin/gdrive-mount.sh"
+    echo "  2. If token expired: mclone config reconnect gdrive"
+    echo "  3. Or run 'claude' without context and use /gdrive-repair"
+    return 1
+  fi
+
+  claude "$@"
 }
 
 # --- 6. Mac Loader ---
