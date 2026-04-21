@@ -87,24 +87,26 @@ fi
 # - ccoding: Coding conventions context (for planning implementations)
 #
 # Gdrive path differs by platform:
-#   OD:  ~/gdrive/
+#   OD:  ~/gdrive/claude  (mount is at GDrive root for team brain access)
 #   Mac: ~/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/
 if [[ "$(uname)" == "Darwin" ]]; then
   CLAUDE_PARA_DIR="$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude"
 else
-  CLAUDE_PARA_DIR="$HOME/gdrive"
+  CLAUDE_PARA_DIR="$HOME/gdrive/claude"
 fi
 CLAUDE_CODING_DIR="$CLAUDE_PARA_DIR/03_resources/coding"
 
-# Ensure Claude PARA symlinks exist (called lazily, not at load time)
+# Ensure Claude PARA symlinks exist
 _ensure_para_symlinks() {
+  # Skip if symlinks already exist (avoids hitting FUSE mount on every shell)
+  [[ -L "$HOME/.claude/CLAUDE.md" && -L "$HOME/.claude/plans" ]] && return 0
   if [ -d "$CLAUDE_CODING_DIR" ]; then
     [[ -L "$HOME/.claude/CLAUDE.md" ]] || ln -sfn "$CLAUDE_CODING_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md" 2>/dev/null
     [[ -L "$HOME/.claude/plans" ]]    || ln -sfn "$CLAUDE_CODING_DIR/plans" "$HOME/.claude/plans" 2>/dev/null
   fi
 }
 
-# Try symlinks eagerly (instant, no-op if mount isn't ready yet)
+# Try symlinks eagerly but only if needed (skips FUSE stat if symlinks exist)
 _ensure_para_symlinks
 
 # Mount helper for Linux ODs. Attempts mount once, no wait loop.

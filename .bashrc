@@ -138,6 +138,9 @@ alias tmux='tmux -2'
 alias tunnel='ssh -C2qTnN -D 8080 brandonkliu@brandonkliu.com'
 alias v='source venv/bin/activate'
 
+# Auto-mount Google Drive on Linux ODs (matches zshrc auto-mount)
+[[ -f "$HOME/.claude/gdrive-mount-scripts/auto-mount.sh" ]] && source "$HOME/.claude/gdrive-mount-scripts/auto-mount.sh"
+
 if [[ -e ~/.bashrc.local ]]; then
   source ~/.bashrc.local
 fi
