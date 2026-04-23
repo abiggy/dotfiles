@@ -86,10 +86,18 @@ if [ -f "/etc/hostname" ] && (grep -q "\.od\|\.ftw\|\.prn\|\.ash\|\.facebook\.co
   export no_proxy=".fbcdn.net,.facebook.com,.thefacebook.com,.tfbnw.net,.fb.com,.fburl.com,.facebook.net,.sb.fbsbx.com,localhost"
 fi
 
-# automatically try to set claude mode
-alias claude='command claude --model "claude-opus-4-6[1m]" --dangerously-skip-permissions'
+# Default claude: let ~/.claude/settings.json + claude-templates skills decide model + effort.
+# Drop --model so model is sourced from settings.json (currently claude-opus-4-7[1m]) and
+# scales automatically as new models ship via the claude-code-latest skill.
+alias claude='command claude --dangerously-skip-permissions'
 
-# alias claude="command claude --model \"opus[1m]\" --dangerously-skip-permissions"
+# Pinned 4.7 fallback — use if the default resolves to something broken or unwanted.
+alias claude47='command claude --model "claude-opus-4-7[1m]" --dangerously-skip-permissions'
+
+# Pinned 4.6 fallback — use only if you specifically need extended-thinking / disable-adaptive-thinking
+# (those skills don't apply to 4.7 per Kevin's post comments).
+alias claude46='command claude --model "claude-opus-4-6[1m]" --dangerously-skip-permissions'
+
 alias cc="claude"
 
 # Claude people plugin
