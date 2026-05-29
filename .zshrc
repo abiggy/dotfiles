@@ -81,6 +81,15 @@ if [[ "$(uname)" != "Darwin" ]]; then
   [[ -f "$HOME/.claude/gdrive-mount-scripts/vscode-workspace.sh" ]] && source "$HOME/.claude/gdrive-mount-scripts/vscode-workspace.sh"
 fi
 
+# --- 4.6. Node for Claude Code browser MCP (OD only) ---
+# /usr/local/bin/node on devservers is v16; the browser MCP tool needs >= 20.
+# Point NODE at fbsource's v24 wrapper (auto-picks linux-x64 / darwin-arm64 / etc).
+# Mac has its own node via brew, no fbsource path — skip there.
+if [[ "$(uname)" != "Darwin" ]]; then
+  [[ -x "$HOME/fbsource/xplat/third-party/node/bin/node" ]] && \
+    export NODE="$HOME/fbsource/xplat/third-party/node/bin/node"
+fi
+
 # --- 5. Claude Mode Commands ---
 # - claude (from fbsource): Lean coding mode (default)
 # - para: Strategy mode (full PARA context)
@@ -127,6 +136,32 @@ _ensure_gdrive_mount() {
 alias cdpara='cd "$CLAUDE_PARA_DIR"'
 alias vimpara='vim "$CLAUDE_PARA_DIR"'
 
+# Animal tab coloring (dispatch protocol): defines `animal <name>` to color the
+# iTerm2 tab. Sourced before the launcher so `para golden-hawk` can use it.
+for _atab in "$CLAUDE_PARA_DIR/02_areas/ai_workflows/animal-tab.sh" \
+             "$HOME/gdrive/claude/02_areas/ai_workflows/animal-tab.sh" \
+             "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/02_areas/ai_workflows/animal-tab.sh"; do
+  [ -f "$_atab" ] && { source "$_atab"; break; }
+done; unset _atab
+
+# Shared Claude launcher used by para/ccoding/teampara/claude48 so every entry
+# point is identical: Opus 4.8 (1M ctx), latest build, effort uncapped so ultracode
+# can engage (persisted default is xhigh + workflows via ~/.claude/settings.json),
+# and permissions bypassed. Do NOT set --effort / CLAUDE_CODE_EFFORT_LEVEL here —
+# pinning a tier blocks ultracode. Edit flags in ONE place: this function.
+_claude_launch() {
+  # Optional leading animal name colors the iTerm tab (dispatch protocol), then
+  # is shifted off so it never reaches claude. Bare `para`/`ccoding` unaffected.
+  case "$1" in
+    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|silver-fox|orc)
+      animal "$1"; local _an="$1"; shift; set -- -n "$(animal_label "$_an")" "$@" ;;
+  esac
+  unset CLAUDE_CODE_EFFORT_LEVEL CLAUDE_EFFORT
+  CLAUDE_CODE_VERSION_OVERRIDE=latest \
+  META_CLAUDE_CODE_RELEASE=latest \
+  command claude --model 'claude-opus-4-8[1m]' --dangerously-skip-permissions "$@"
+}
+
 para() {
   _ensure_gdrive_mount || return 1
 
@@ -136,7 +171,7 @@ para() {
     return 1
   fi
   _ensure_para_symlinks
-  cd "$CLAUDE_PARA_DIR" && claude "$@"
+  cd "$CLAUDE_PARA_DIR" && _claude_launch "$@"
 }
 
 ccoding() {
@@ -166,7 +201,7 @@ ccoding() {
     return 1
   fi
 
-  claude "$@"
+  _claude_launch "$@"
 }
 
 # Team PARA — shared team context for Claude Code (Shared Drive)
@@ -182,8 +217,12 @@ teampara() {
     echo "Add the shared Google Drive folder to your Drive first."
     return 1
   fi
-  cd "$TEAM_PARA_DIR" && claude "$@"
+  cd "$TEAM_PARA_DIR" && _claude_launch "$@"
 }
+
+# Bare entry point to the shared launcher (no PARA cd / mount guard).
+# para/ccoding/teampara already route through _claude_launch too.
+claude48() { _claude_launch "$@"; }
 
 # --- 6. Mac Loader ---
 # If we are on a Mac (Darwin), load the heavy extras
