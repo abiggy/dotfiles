@@ -149,12 +149,46 @@ done; unset _atab
 # can engage (persisted default is xhigh + workflows via ~/.claude/settings.json),
 # and permissions bypassed. Do NOT set --effort / CLAUDE_CODE_EFFORT_LEVEL here —
 # pinning a tier blocks ultracode. Edit flags in ONE place: this function.
+# Animals launch with --settings '{"ultracode": true}' (set in the animal branch
+# below) so the auto-kickoff runs in ultracode = xhigh + dynamic workflow
+# orchestration → a worker can fan out research subprocesses on turn 1, no manual
+# /effort step. Bare `para`/`ccoding` (no animal) stay default; /effort in-session
+# if you want ultracode there. (`--effort <tier>` is NOT used — it would block ultracode.)
 _claude_launch() {
-  # Optional leading animal name colors the iTerm tab (dispatch protocol), then
-  # is shifted off so it never reaches claude. Bare `para`/`ccoding` unaffected.
+  # Optional leading animal name (dispatch protocol). When present it:
+  #   1. colors the iTerm tab + sets a persistent title, AND
+  #   2. if a dispatch file 00_inbox/dispatch/<name>.md exists AND no explicit
+  #      prompt was given, AUTO-FEEDS a kickoff prompt so ONE command fully
+  #      launches a worker (read your dispatch file + execute) — no manual paste.
+  # Unaffected: bare `para`/`ccoding` (no animal), and `<mode> <animal> "prompt"`
+  # (an explicit prompt always wins over the auto-kickoff).
   case "$1" in
-    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|silver-fox|orc)
-      animal "$1"; local _an="$1"; shift; set -- -n "$(animal_label "$_an")" "$@" ;;
+    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|zookeeper|orc|zoo)
+      animal "$1"
+      local _an="$1"; shift
+      local _label; _label="$(animal_label "$_an")"
+      local _df _root=""
+      for _df in "$HOME/gdrive/claude/00_inbox/dispatch/$_an.md" \
+                 "${CLAUDE_PARA_DIR:-/nonexistent}/00_inbox/dispatch/$_an.md" \
+                 "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/00_inbox/dispatch/$_an.md"; do
+        [ -f "$_df" ] && { _root="${_df%/00_inbox/dispatch/*}"; break; }
+      done
+      # Session name = codename + a 1-2 word task tag from the dispatch file's
+      # **Tab:** field, so the prompt box / tab title show WHAT the animal is on
+      # (e.g. "🦅 Golden-Hawk · adampriorities"). Falls back to just the codename.
+      local _title="$_label"
+      if [ -n "$_root" ]; then
+        local _tab; _tab="$(grep -m1 '^\*\*Tab:\*\*' "$_df" 2>/dev/null | sed -E 's/^\*\*Tab:\*\*[[:space:]]*//; s/[[:space:]]*$//')"
+        [ -n "$_tab" ] && _title="$_label · $_tab"
+      fi
+      if [ "$#" -eq 0 ] && [ -n "$_root" ]; then
+        # No explicit prompt + a dispatch file exists → auto-kickoff.
+        local _kick="You are ${_label}, a dispatch worker. Badge this terminal first: bash \"$_root/02_areas/ai_workflows/animal-badge.sh\" $_an  — then read your dispatch file at $_df and execute it, keeping its Status updated at START / CHECKPOINT / END. If that file's Status shows the work is already finished (DONE / AWAITING REVIEW) or it has been archived, STOP and ask Adam instead of re-running."
+        set -- --settings '{"ultracode": true}' -n "$_title" "$_kick"
+      else
+        set -- --settings '{"ultracode": true}' -n "$_title" "$@"
+      fi
+      ;;
   esac
   unset CLAUDE_CODE_EFFORT_LEVEL CLAUDE_EFFORT
   CLAUDE_CODE_VERSION_OVERRIDE=latest \
