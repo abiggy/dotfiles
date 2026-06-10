@@ -55,9 +55,35 @@ elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
     source /usr/share/doc/fzf/examples/completion.zsh
 fi
 
-# SSH Settings
-# Hides user@hostname in the prompt if you are logged in via SSH
-[[ -n "$SSH_CLIENT" ]] || export DEFAULT_USER="adambiglow"
+# --- Prompt host segment: color-coded BY ENVIRONMENT (tmux-safe) ---
+# agnoster hides user@host based on $SSH_CLIENT, which is UNSET inside tmux → the
+# host wrongly vanishes on remote boxes worked via tmux (the original bug). Detect
+# the environment with tmux-safe signals (uname / OnDemand marker / hostname) and
+# give each a vivid color + icon, so a glance at the prompt tells you what kind of
+# box a pane is on. Colors are xterm-256 codes — preview them with `spectrum_ls`.
+#   🍎 Mac (local)   → 205 hot-pink
+#   🖥  devserver     → 44  electric-teal
+#   ☁️ OnDemand      → 208 orange
+#   💻 other remote  → 99  purple
+# Tweak: change a color code / icon below. To HIDE on Mac instead of coloring it,
+# set the Darwin branch to:  _show=0; export DEFAULT_USER="adambiglow"
+_host="${HOST:-$(hostname)}"; _show=1
+if [[ "$(uname)" == "Darwin" ]]; then
+  _bg=205; _fg=black; _icon='🍎'                              # Mac (local)
+elif [[ -f /etc/ondemand-whoami ]]; then
+  _bg=208; _fg=black; _icon='☁️'                             # OnDemand (marker file)
+else
+  case "$_host" in
+    *.od|*.od.*|*.ondemand*) _bg=208; _fg=black; _icon='☁️' ;;  # OnDemand
+    devvm*|*.facebook.com)   _bg=34;  _fg=black; _icon='🖥' ;;  # devserver — green (ramp: 46>40>34>28>22)
+    *)                       _bg=99;  _fg=white; _icon='💻' ;;  # other remote
+  esac
+fi
+# Bake the resolved color/icon into prompt_context at definition time (so the temp
+# vars can be unset without breaking later prompt renders).
+# Two spaces after the icon: wide emoji glyphs visually swallow a single space.
+[[ "$_show" == 1 ]] && eval "prompt_context() { prompt_segment $_bg $_fg '${_icon}  %m' }"
+unset _host _show _bg _fg _icon
 
 # Tab Titles (Precmd hook)
 precmd() {
@@ -136,6 +162,30 @@ _ensure_gdrive_mount() {
 alias cdpara='cd "$CLAUDE_PARA_DIR"'
 alias vimpara='vim "$CLAUDE_PARA_DIR"'
 
+# zoo-status: one-glance state of the whole menagerie (🚦 Beacons + 📛 .URGENT sentinels),
+# urgency-bucketed. Read-only. See 02_areas/ai_workflows/zoo-status.sh + zoo_protocol.md.
+zoo-status() {
+  local _z
+  for _z in "${CLAUDE_PARA_DIR:-/nonexistent}/02_areas/ai_workflows/zoo-status.sh" \
+            "$HOME/gdrive/claude/02_areas/ai_workflows/zoo-status.sh" \
+            "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/02_areas/ai_workflows/zoo-status.sh"; do
+    [ -f "$_z" ] && { bash "$_z" "$@"; return $?; }
+  done
+  echo "zoo-status: script not found"; return 1
+}
+
+# zoo-watch [seconds]: LIVE self-refreshing dashboard in this tab — re-renders every N
+# seconds and rings the bell + flashes 🆕 when an animal newly needs you. Leave it up.
+zoo-watch() {
+  local _w
+  for _w in "${CLAUDE_PARA_DIR:-/nonexistent}/02_areas/ai_workflows/zoo-watch.sh" \
+            "$HOME/gdrive/claude/02_areas/ai_workflows/zoo-watch.sh" \
+            "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/02_areas/ai_workflows/zoo-watch.sh"; do
+    [ -f "$_w" ] && { bash "$_w" "$@"; return $?; }
+  done
+  echo "zoo-watch: script not found"; return 1
+}
+
 # Animal tab coloring (dispatch protocol): defines `animal <name>` to color the
 # iTerm2 tab. Sourced before the launcher so `para golden-hawk` can use it.
 for _atab in "$CLAUDE_PARA_DIR/02_areas/ai_workflows/animal-tab.sh" \
@@ -162,10 +212,14 @@ _claude_launch() {
   #      launches a worker (read your dispatch file + execute) — no manual paste.
   # Unaffected: bare `para`/`ccoding` (no animal), and `<mode> <animal> "prompt"`
   # (an explicit prompt always wins over the auto-kickoff).
-  case "$1" in
+  # Codename match is CASE-INSENSITIVE: lowercase the leading arg before matching
+  # so `ccoding Ivory-Swan` works the same as `ccoding ivory-swan`. We only read
+  # $1 (never rewrite $@), so bare `para`/`ccoding` and prompt-first calls are untouched.
+  local _lc1=""; [ "$#" -gt 0 ] && _lc1="${1:l}"
+  case "$_lc1" in
     fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|zookeeper|orc|zoo)
-      animal "$1"
-      local _an="$1"; shift
+      animal "$_lc1"
+      local _an="$_lc1"; shift
       local _label; _label="$(animal_label "$_an")"
       local _df _root=""
       for _df in "$HOME/gdrive/claude/00_inbox/dispatch/$_an.md" \
