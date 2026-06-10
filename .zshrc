@@ -235,6 +235,18 @@ _claude_launch() {
         local _tab; _tab="$(grep -m1 '^\*\*Tab:\*\*' "$_df" 2>/dev/null | sed -E 's/^\*\*Tab:\*\*[[:space:]]*//; s/[[:space:]]*$//')"
         [ -n "$_tab" ] && _title="$_label · $_tab"
       fi
+      # Under tmux (e.g. iTerm -CC), the iTerm tab shows the tmux WINDOW name, not
+      # the OSC title that `animal`/claude emit: tmux here runs with allow-rename
+      # off (escape-sequence renames ignored) + automatic-rename on (every window
+      # gets named after the running command → "claude"). A tmux *command* still
+      # works, so force the window name to the animal title and pin it. No-op
+      # outside tmux (Mac native iTerm tabs already get the title from `claude -n`).
+      if [ -n "$TMUX" ]; then
+        # Target THIS pane's window ($TMUX_PANE) — a bare rename-window hits the
+        # client's *active* window, which may be a different tab and mislabels it.
+        command tmux rename-window -t "$TMUX_PANE" "$_title" 2>/dev/null
+        command tmux set-window-option -t "$TMUX_PANE" automatic-rename off 2>/dev/null
+      fi
       if [ "$#" -eq 0 ] && [ -n "$_root" ]; then
         # No explicit prompt + a dispatch file exists → auto-kickoff.
         local _kick="You are ${_label}, a dispatch worker. Badge this terminal first: bash \"$_root/02_areas/ai_workflows/animal-badge.sh\" $_an  — then read your dispatch file at $_df and execute it, keeping its Status updated at START / CHECKPOINT / END. If that file's Status shows the work is already finished (DONE / AWAITING REVIEW) or it has been archived, STOP and ask Adam instead of re-running."
