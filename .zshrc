@@ -62,28 +62,37 @@ fi
 # give each a vivid color + icon, so a glance at the prompt tells you what kind of
 # box a pane is on. Colors are xterm-256 codes — preview them with `spectrum_ls`.
 #   🍎 Mac (local)   → 205 hot-pink
-#   🖥  devserver     → 44  electric-teal
+#   🖥  devserver     → 37  teal
 #   ☁️ OnDemand      → 208 orange
 #   💻 other remote  → 99  purple
 # Tweak: change a color code / icon below. To HIDE on Mac instead of coloring it,
 # set the Darwin branch to:  _show=0; export DEFAULT_USER="adambiglow"
 _host="${HOST:-$(hostname)}"; _show=1
 if [[ "$(uname)" == "Darwin" ]]; then
-  _bg=205; _fg=black; _icon='🍎'                              # Mac (local)
+  _bg=205; _fg=232;   _icon='🍎'                              # Mac (local)
 elif [[ -f /etc/ondemand-whoami ]]; then
   _bg=208; _fg=black; _icon='☁️'                             # OnDemand (marker file)
 else
   case "$_host" in
     *.od|*.od.*|*.ondemand*) _bg=208; _fg=black; _icon='☁️' ;;  # OnDemand
-    devvm*|*.facebook.com)   _bg=34;  _fg=black; _icon='🖥' ;;  # devserver — green (ramp: 46>40>34>28>22)
+    devvm*|*.facebook.com)   _bg=37;  _fg=black; _icon='🖥' ;;  # devserver — teal (ramp bright→dark: 44>38>37>30>23)
     *)                       _bg=99;  _fg=white; _icon='💻' ;;  # other remote
   esac
 fi
 # Bake the resolved color/icon into prompt_context at definition time (so the temp
 # vars can be unset without breaking later prompt renders).
-# Two spaces after the icon: wide emoji glyphs visually swallow a single space.
-[[ "$_show" == 1 ]] && eval "prompt_context() { prompt_segment $_bg $_fg '${_icon}  %m' }"
+# One space after the icon — two looked too gappy for the full-width apple glyph (🍎).
+[[ "$_show" == 1 ]] && eval "prompt_context() { prompt_segment $_bg $_fg '${_icon} %m' }"
 unset _host _show _bg _fg _icon
+
+# --- Prompt path segment (Mac only): this iTerm's palette repaints ANSI 'blue'
+# as pink, which melts into the pink host. Pin the dir segment to a fixed 256
+# violet so it complements the pink instead. OD/devserver keep agnoster's default
+# blue — their palettes render true-blue, which already looks great.
+if [[ "$(uname)" == "Darwin" ]]; then
+  AGNOSTER_DIR_BG=99    # violet #875fff (256-code → not subject to ANSI remap)
+  AGNOSTER_DIR_FG=231   # bright white text for contrast on the violet
+fi
 
 # Tab Titles (Precmd hook)
 precmd() {
