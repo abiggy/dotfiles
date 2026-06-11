@@ -67,7 +67,7 @@ fi
 #   💻 other remote  → 99  purple
 # Tweak: change a color code / icon below. To HIDE on Mac instead of coloring it,
 # set the Darwin branch to:  _show=0; export DEFAULT_USER="adambiglow"
-_host="${HOST:-$(hostname)}"; _show=1
+_host="${HOST:-$(hostname)}"; _show=1; _sep=' '
 if [[ "$(uname)" == "Darwin" ]]; then
   _bg=205; _fg=232;   _icon='🍎'                              # Mac (local)
 elif [[ -f /etc/ondemand-whoami ]]; then
@@ -75,15 +75,16 @@ elif [[ -f /etc/ondemand-whoami ]]; then
 else
   case "$_host" in
     *.od|*.od.*|*.ondemand*) _bg=208; _fg=black; _icon='☁️' ;;  # OnDemand
-    devvm*|*.facebook.com)   _bg=37;  _fg=black; _icon='🖥' ;;  # devserver — teal (ramp bright→dark: 44>38>37>30>23)
+    devvm*|*.facebook.com)   _bg=37;  _fg=black; _icon='🖥'; _sep='  ' ;;  # devserver — teal (ramp: 44>38>37>30>23); 2 spaces — 🖥 renders narrow
     *)                       _bg=99;  _fg=white; _icon='💻' ;;  # other remote
   esac
 fi
 # Bake the resolved color/icon into prompt_context at definition time (so the temp
 # vars can be unset without breaking later prompt renders).
-# One space after the icon — two looked too gappy for the full-width apple glyph (🍎).
-[[ "$_show" == 1 ]] && eval "prompt_context() { prompt_segment $_bg $_fg '${_icon} %m' }"
-unset _host _show _bg _fg _icon
+# $_sep = gap between icon and host. Default 1 space (full-width 🍎/☁️ fill it); the
+# narrow 🖥 desktop glyph gets 2 (set in the devserver branch above).
+[[ "$_show" == 1 ]] && eval "prompt_context() { prompt_segment $_bg $_fg '${_icon}${_sep}%m' }"
+unset _host _show _bg _fg _icon _sep
 
 # --- Prompt path segment (Mac only): this iTerm's palette repaints ANSI 'blue'
 # as pink, which melts into the pink host. Pin the dir segment to a fixed 256
