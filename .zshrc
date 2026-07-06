@@ -10,6 +10,18 @@ if [ -f "$HOME/dotfiles/term/fb_common.sh" ]; then
     source "$HOME/dotfiles/term/fb_common.sh"
 fi
 
+# --- 2.5. tmux: refresh the forwarded SSH agent socket -------------------------
+# Inside tmux, SSH_AUTH_SOCK is captured when the tmux SERVER first starts and
+# goes stale on every reconnect — new panes/windows then inherit a dead socket.
+# Pull the freshest value from the tmux session env (refreshed on each attach via
+# update-environment) so agent-backed auth keeps working in long-lived sessions.
+# NB: github pushes authenticate via the x509 WALLET cert (fbwallet_fetch + its
+# renewal timer), NOT this socket — so this is general SSH-agent hygiene, not by
+# itself the github 403 fix. See coding/references/git-troubleshooting.md §1.
+if [ -n "$TMUX" ]; then
+  eval "$(command tmux show-environment -s SSH_AUTH_SOCK 2>/dev/null)"
+fi
+
 # --- 3. Oh-My-Zsh Configuration ---
 export ZSH=$HOME/.oh-my-zsh
 
@@ -196,13 +208,24 @@ zoo-watch() {
   echo "zoo-watch: script not found"; return 1
 }
 
-# Animal tab coloring (dispatch protocol): defines `animal <name>` to color the
-# iTerm2 tab. Sourced before the launcher so `para golden-hawk` can use it.
-for _atab in "$CLAUDE_PARA_DIR/02_areas/ai_workflows/animal-tab.sh" \
-             "$HOME/gdrive/claude/02_areas/ai_workflows/animal-tab.sh" \
-             "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/02_areas/ai_workflows/animal-tab.sh"; do
-  [ -f "$_atab" ] && { source "$_atab"; break; }
-done; unset _atab
+# Animal tab coloring (dispatch protocol): defines `animal`/`animal_label` to
+# color+label the iTerm2 tab / tmux window. These live on gdrive, so if a shell
+# starts BEFORE gdrive finishes mounting (first tab after PTO/reboot/token lapse),
+# this init-time source silently no-ops → the functions stay undefined for the
+# whole shell → `para <animal>` later launches with a BLANK title (no color/👑/
+# name). Wrap it in a function so the launcher can RE-source on demand after the
+# mount guard has already run. We deliberately do NOT touch/await the mount here —
+# that's the gdrive-mount rabbit hole (see coding gdrive-mount-issue notes).
+_source_animal_tab() {
+  local _atab
+  for _atab in "$CLAUDE_PARA_DIR/02_areas/ai_workflows/animal-tab.sh" \
+               "$HOME/gdrive/claude/02_areas/ai_workflows/animal-tab.sh" \
+               "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/02_areas/ai_workflows/animal-tab.sh"; do
+    [ -f "$_atab" ] && { source "$_atab"; return 0; }
+  done
+  return 1
+}
+_source_animal_tab   # best-effort at shell init (no-op if gdrive not mounted yet)
 
 # Shared Claude launcher used by para/ccoding/teampara/claude48 so every entry
 # point is identical: Opus 4.8 (1M ctx), latest build, effort uncapped so ultracode
@@ -227,10 +250,16 @@ _claude_launch() {
   # $1 (never rewrite $@), so bare `para`/`ccoding` and prompt-first calls are untouched.
   local _lc1=""; [ "$#" -gt 0 ] && _lc1="${1:l}"
   case "$_lc1" in
-    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|zookeeper|orc|zoo)
-      animal "$_lc1"
+    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|slate-badger|zookeeper|orc|zoo)
+      # Self-heal the gdrive-mount startup race: if this shell started before
+      # gdrive mounted, animal_label is undefined. Re-source now — para/ccoding
+      # already waited for the mount, so the file is reachable by this point.
+      command -v animal_label >/dev/null 2>&1 || _source_animal_tab || \
+        echo "⚠️  ~/gdrive not mounted — animal tab color/title unavailable this session (reopen the tab once gdrive is up)." >&2
+      command -v animal >/dev/null 2>&1 && animal "$_lc1"
       local _an="$_lc1"; shift
-      local _label; _label="$(animal_label "$_an")"
+      local _label; _label="$(command -v animal_label >/dev/null 2>&1 && animal_label "$_an")"
+      [ -z "$_label" ] && _label="$_an"   # never blank — fall back to the codename
       local _df _root=""
       for _df in "$HOME/gdrive/claude/00_inbox/dispatch/$_an.md" \
                  "${CLAUDE_PARA_DIR:-/nonexistent}/00_inbox/dispatch/$_an.md" \
