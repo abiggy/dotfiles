@@ -227,6 +227,107 @@ _source_animal_tab() {
 }
 _source_animal_tab   # best-effort at shell init (no-op if gdrive not mounted yet)
 
+# VSCode Remote window-title injector (dispatch protocol). Mirrors the animal name +
+# color into the OD's window title bar so a `ccoding <animal>` session is identifiable
+# at a glance — the VSCode analogue of the iTerm tab color. VSCode has no env-var/OSC
+# title hook, so we merge into the Remote *Machine* settings.json, which VSCode watches
+# and applies live. Machine scope = OD-wide → perfect for the one-animal-per-OD
+# convention (no repo/workspace pollution). Reuses the single-source color map via
+# animal_hex (in animal-tab.sh), so iTerm + VSCode never drift.
+#   _vscode_animal_title inject "<title>" "<#hex>" "<#fg>" "<#fgdim>"
+#   _vscode_animal_title reset
+# Hard no-op unless inside a VSCode integrated terminal (clean on Mac native iTerm).
+# Never crashes the launcher: missing python3 / absent or malformed JSON all fall
+# through silently. The merge preserves every other settings key and snapshots a
+# pristine baseline (settings.json.animalbak) on first inject so reset restores the
+# exact Meta-managed defaults; reset is a true no-op when nothing was ever injected.
+_vscode_animal_title() {
+  [ -n "$VSCODE_IPC_HOOK_CLI" ] || [ "$TERM_PROGRAM" = "vscode" ] || return 0
+  command -v python3 >/dev/null 2>&1 || return 0
+
+  # Locate the Remote Machine settings.json. Meta's vscodefb uses ~/.vscode-remote;
+  # vanilla Remote-SSH uses ~/.vscode-server; Cursor/insiders variants handled too.
+  local _sf="" _d
+  for _d in "$HOME/.vscode-remote/data/Machine" \
+            "$HOME/.vscode-server/data/Machine" \
+            "$HOME/.vscode-server-insiders/data/Machine" \
+            "$HOME/.cursor-server/data/Machine"; do
+    [ -d "$_d" ] || continue
+    _sf="$_d/settings.json"; break
+  done
+  [ -n "$_sf" ] || return 0
+
+  python3 - "$_sf" "${1:-reset}" "${2:-}" "${3:-}" "${4:-}" "${5:-}" <<'PYEOF' 2>/dev/null
+import json, os, sys
+sf, mode, label, hexc, fg, fgdim = (sys.argv[1:7] + [""] * 6)[:6]
+BAK  = sf + ".animalbak"   # pristine (pre-animal) baseline, captured once
+MARK = "_animalInjected"   # sentinel: file currently holds animal overrides
+
+def load(path):
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+data = load(sf)
+if not isinstance(data, dict):
+    data = {}
+
+if mode == "reset":
+    base = load(BAK)
+    if isinstance(base, dict):
+        out = base
+        try:
+            os.remove(BAK)
+        except Exception:
+            pass
+    elif MARK in data:
+        out = {k: v for k, v in data.items() if k != MARK}
+    else:
+        sys.exit(0)  # already clean / never injected → leave the file untouched
+else:
+    # Pristine (pre-animal) config to derive from — captured once, so re-runs and
+    # animal switches never stack prefixes or accumulate stale colors.
+    pristine = data if MARK not in data else load(BAK)
+    if not isinstance(pristine, dict):
+        pristine = {}
+    if MARK not in data and not os.path.exists(BAK):
+        try:
+            with open(BAK, "w") as f:
+                json.dump(data, f, indent=2)
+        except Exception:
+            pass
+    out = dict(data)  # preserve any keys Meta/devmate added since the snapshot
+    # PREPEND the animal prefix to the PRISTINE title so the existing context
+    # (${devmate:status}, OD/workspace, ${remoteName}) is preserved after it. Deriving
+    # from pristine (not the current, possibly-prefixed title) keeps re-runs idempotent.
+    base_title = pristine.get("window.title") or "${rootName}${separator}${remoteName}"
+    out["window.title"] = label + "${separator}" + base_title
+    out["window.titleSeparator"] = " · "  # so the whole title reads consistently
+    cc = dict(pristine.get("workbench.colorCustomizations") or {})
+    cc.update({
+        "titleBar.activeBackground":      hexc,
+        "titleBar.inactiveBackground":    hexc,
+        "titleBar.activeForeground":      fg,
+        "titleBar.inactiveForeground":    fgdim,
+        "activityBar.background":         hexc,
+        "activityBar.foreground":         fg,
+        "activityBar.inactiveForeground": fgdim,
+    })
+    out["workbench.colorCustomizations"] = cc
+    out[MARK] = label
+
+try:
+    tmp = sf + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(out, f, indent=2)
+    os.replace(tmp, sf)
+except Exception:
+    pass
+PYEOF
+}
+
 # Shared Claude launcher used by para/ccoding/teampara/claude48 so every entry
 # point is identical: Opus 4.8 (1M ctx), latest build, effort uncapped so ultracode
 # can engage (persisted default is xhigh + workflows via ~/.claude/settings.json),
@@ -249,8 +350,10 @@ _claude_launch() {
   # so `ccoding Ivory-Swan` works the same as `ccoding ivory-swan`. We only read
   # $1 (never rewrite $@), so bare `para`/`ccoding` and prompt-first calls are untouched.
   local _lc1=""; [ "$#" -gt 0 ] && _lc1="${1:l}"
+  local _animal_matched=0
   case "$_lc1" in
     fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|slate-badger|zookeeper|orc|zoo)
+      _animal_matched=1
       # Self-heal the gdrive-mount startup race: if this shell started before
       # gdrive mounted, animal_label is undefined. Re-source now — para/ccoding
       # already waited for the mount, so the file is reachable by this point.
@@ -286,6 +389,14 @@ _claude_launch() {
         command tmux rename-window -t "$TMUX_PANE" "$_title" 2>/dev/null
         command tmux set-window-option -t "$TMUX_PANE" automatic-rename off 2>/dev/null
       fi
+      # VSCode Remote: mirror the animal name + color into the OD window title bar
+      # (no-op outside a VSCode integrated terminal / on Mac native iTerm). Reuses
+      # the single-source color map via animal_hex so iTerm + VSCode never drift.
+      if command -v _vscode_animal_title >/dev/null 2>&1 && command -v animal_hex >/dev/null 2>&1; then
+        local _vhex _vfg _vfgdim
+        read -r _vhex _vfg _vfgdim <<< "$(animal_hex "$_an")"
+        [ -n "$_vhex" ] && _vscode_animal_title inject "$_title" "$_vhex" "$_vfg" "$_vfgdim"
+      fi
       if [ "$#" -eq 0 ] && [ -n "$_root" ]; then
         # No explicit prompt + a dispatch file exists → auto-kickoff.
         local _kick="You are ${_label}, a dispatch worker. Badge this terminal first: bash \"$_root/02_areas/ai_workflows/animal-badge.sh\" $_an  — then read your dispatch file at $_df and execute it, keeping its Status updated at START / CHECKPOINT / END. If that file's Status shows the work is already finished (DONE / AWAITING REVIEW) or it has been archived, STOP and ask Adam instead of re-running."
@@ -295,6 +406,9 @@ _claude_launch() {
       fi
       ;;
   esac
+  # Bare para/ccoding (no animal) in a VSCode terminal → clear any stale animal
+  # title/color so a non-animal window isn't left themed from a prior session.
+  [ "$_animal_matched" -eq 0 ] && command -v _vscode_animal_title >/dev/null 2>&1 && _vscode_animal_title reset
   unset CLAUDE_CODE_EFFORT_LEVEL CLAUDE_EFFORT
   CLAUDE_CODE_VERSION_OVERRIDE=latest \
   META_CLAUDE_CODE_RELEASE=latest \
