@@ -210,3 +210,77 @@ uie-flipper() {
     echo "Flipper ready — app restarted with fresh ports."
   fi
 }
+
+# --- Browser Remote-Debug Tunnel (Claude Code www/Nest before-after screenshots) ---
+# Drives your *Mac's* Chrome — which already has your SSO cookies + mTLS client cert
+# in the keychain — from ccoding running on an OD, so Claude can take real
+# before/after screenshots itself. This is the BACKUP path: the OD's own
+# remote-headless browser (browser_launch on the OD) is the primary, fully-autonomous
+# route for www. Reach for this tunnel when that can't reach the target — i.e. Nest
+# apps on internalmeta.com (mTLS wall) or when you need YOUR real logged-in cookies.
+# Full playbook: ~/gdrive/claude/03_resources/coding/references/www-browser-e2e-dogfood.md
+#
+# Usage: browser-it-all 158953.od     # launch debug Chrome (if needed) + open the tunnel
+#        browser-tunnel 158953.od     # re-open just the tunnel (Chrome already running)
+# The command HANGS after the Duo prompt — that means the tunnel is live. Ctrl-C to stop.
+# Chrome persists across Ctrl-C (SSO stays logged in); kill it with:  pkill -f claude_browser
+# Persistent variant that survives laptop sleep / network blips (if x2ssh is installed):
+#   x2ssh -et -et_reverse_tunnel 9222:9222 158953.od.fbinfra.net
+
+# Normalize an OD/host arg (158953 | 158953.od | full hostname) -> <host>.fbinfra.net
+__browser_od_host() {
+  case "$1" in
+    *.fbinfra.net) print -r -- "$1" ;;            # already a full fbinfra host
+    *.od)          print -r -- "${1}.fbinfra.net" ;;  # 158953.od -> 158953.od.fbinfra.net
+    *.*)           print -r -- "$1" ;;            # some other full host (e.g. devvm...)
+    *)             print -r -- "${1}.od.fbinfra.net" ;;  # bare 158953 -> 158953.od.fbinfra.net
+  esac
+}
+
+browser-it-all() {
+  local od="${1:?Usage: browser-it-all <od>   (e.g. browser-it-all 158953.od)}"
+  local chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+  # Reuse an already-running debug Chrome so re-runs keep your SSO login; else launch.
+  if curl -s -o /dev/null --max-time 2 http://127.0.0.1:9222/json/version; then
+    echo "✅ Debug Chrome already listening on :9222 — reusing it (SSO preserved)."
+  elif [[ ! -x "$chrome" ]]; then
+    echo "❌ Google Chrome not found at: $chrome"
+    return 1
+  else
+    echo "🌐 Launching throwaway-profile Chrome with remote debugging on :9222 ..."
+    nohup "$chrome" \
+      --remote-debugging-port=9222 \
+      --user-data-dir=/tmp/claude_browser \
+      --no-first-run --no-default-browser-check --disable-extensions \
+      https://www.internalfb.com/ >/dev/null 2>&1 &
+    disown
+    echo "   → In the Chrome window that just opened, log into SSO (internalfb.com)."
+    sleep 2
+  fi
+
+  browser-tunnel "$od"
+}
+
+# Re-open just the reverse tunnel (Chrome already up). Mirrors uie-flipper.
+browser-tunnel() {
+  local od="${1:?Usage: browser-tunnel <od>   (e.g. browser-tunnel 158953.od)}"
+  local host; host="$(__browser_od_host "$od")"
+
+  # Drop any stale local tunnel so we don't stack duplicate forwards.
+  pkill -f "ssh -N -R 9222:localhost:9222" 2>/dev/null
+
+  echo "🔌 Reverse tunnel:  Mac localhost:9222  →  ${host}:9222"
+  echo "   Hangs after Duo = working. Ctrl-C to stop."
+  echo "   On the OD, verify:   curl -s http://127.0.0.1:9222/json/version"
+  echo "   Then tell Claude:    \"My Mac Chrome is on port 9222 via the tunnel — use it for screenshots.\""
+  ssh -N -R 9222:localhost:9222 \
+    -o ExitOnForwardFailure=yes \
+    -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
+    "$host"
+  local rc=$?
+  if [[ $rc -eq 255 ]]; then
+    echo "\n❌ Tunnel failed (ssh 255) — usually port 9222 is already bound on the OD."
+    echo "   On the OD:  ss -tlnp | grep :9222   → kill the holder, then re-run browser-tunnel ${od}."
+  fi
+}
