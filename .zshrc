@@ -155,11 +155,23 @@ CLAUDE_CODING_DIR="$CLAUDE_PARA_DIR/03_resources/coding"
 
 # Ensure Claude PARA symlinks exist
 _ensure_para_symlinks() {
-  # Skip if symlinks already exist (avoids hitting FUSE mount on every shell)
-  [[ -L "$HOME/.claude/CLAUDE.md" && -L "$HOME/.claude/plans" ]] && return 0
+  # Skip if symlinks already exist (avoids hitting FUSE mount on every shell).
+  # create-diff is the sentinel for the personal-skills set (see below).
+  [[ -L "$HOME/.claude/CLAUDE.md" && -L "$HOME/.claude/plans" && -L "$HOME/.claude/skills/create-diff" ]] && return 0
   if [ -d "$CLAUDE_CODING_DIR" ]; then
     [[ -L "$HOME/.claude/CLAUDE.md" ]] || ln -sfn "$CLAUDE_CODING_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md" 2>/dev/null
     [[ -L "$HOME/.claude/plans" ]]    || ln -sfn "$CLAUDE_CODING_DIR/plans" "$HOME/.claude/plans" 2>/dev/null
+  fi
+  # Personal PARA skills: canonical copies live in gdrive (03_resources/skills/) so they
+  # travel to every box; symlink each into ~/.claude/skills exactly like CLAUDE.md above.
+  # (If you ADD a new skill in gdrive later, run link-skills.sh once — the create-diff
+  # sentinel keeps this loop from hitting FUSE on every shell once linked.)
+  if [ -d "$CLAUDE_PARA_DIR/03_resources/skills" ]; then
+    mkdir -p "$HOME/.claude/skills"
+    for _sk in "$CLAUDE_PARA_DIR/03_resources/skills"/*/; do
+      [ -d "$_sk" ] && ln -sfn "$_sk" "$HOME/.claude/skills/$(basename "$_sk")" 2>/dev/null
+    done
+    unset _sk
   fi
 }
 
@@ -352,7 +364,7 @@ _claude_launch() {
   local _lc1=""; [ "$#" -gt 0 ] && _lc1="${1:l}"
   local _animal_matched=0
   case "$_lc1" in
-    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|slate-badger|zookeeper|orc|zoo)
+    fire-tiger|blue-elephant|golden-hawk|shadow-wolf|jade-dragon|red-fox|steel-shark|stone-crab|copper-otter|cedar-beaver|ivory-swan|teal-owl|slate-badger|purple-peacock|zookeeper|orc|zoo)
       _animal_matched=1
       # Self-heal the gdrive-mount startup race: if this shell started before
       # gdrive mounted, animal_label is undefined. Re-source now — para/ccoding
@@ -401,6 +413,10 @@ _claude_launch() {
         # No explicit prompt + a dispatch file exists → auto-kickoff.
         local _kick="You are ${_label}, a dispatch worker. Badge this terminal first: bash \"$_root/02_areas/ai_workflows/animal-badge.sh\" $_an  — then read your dispatch file at $_df and execute it, keeping its Status updated at START / CHECKPOINT / END. If that file's Status shows the work is already finished (DONE / AWAITING REVIEW) or it has been archived, STOP and ask Adam instead of re-running."
         set -- --settings '{"ultracode": true}' -n "$_title" "$_kick"
+      elif [ "$#" -eq 0 ] && { [ "$_an" = "zoo" ] || [ "$_an" = "orc" ] || [ "$_an" = "zookeeper" ]; }; then
+        # Zookeeper has no dispatch file → kick off the zookeeper skill directly.
+        local _zkick="You are the Zookeeper (Adam's Daily Architect + ORC). Run the zookeeper skill now: FIRST lead with the current time, then ASK Adam for his top of mind BEFORE presenting any plan (that first question is non-negotiable). Then follow the skill — read pulse.md + session_log.md + coaching_spec.md, sweep the animal dispatch beacons, refresh DASHBOARD.md, and lay out the energy-aware day."
+        set -- --settings '{"ultracode": true}' -n "$_title" "$_zkick"
       else
         set -- --settings '{"ultracode": true}' -n "$_title" "$@"
       fi
