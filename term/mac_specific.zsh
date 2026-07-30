@@ -262,6 +262,12 @@ browser-it-all() {
   browser-tunnel "$od"
 }
 
+# Convenience wrapper: my devserver hostname never changes, so hardcode it.
+# Usage: browser-it-all-devserver     # = browser-it-all devvm5292.scu0.facebook.com
+browser-it-all-devserver() {
+  browser-it-all devvm5292.scu0.facebook.com
+}
+
 # Re-open just the reverse tunnel (Chrome already up). Mirrors uie-flipper.
 browser-tunnel() {
   local od="${1:?Usage: browser-tunnel <od>   (e.g. browser-tunnel 158953.od)}"

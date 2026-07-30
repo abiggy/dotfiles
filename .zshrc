@@ -372,7 +372,7 @@ _claude_launch() {
       command -v animal_label >/dev/null 2>&1 || _source_animal_tab || \
         echo "⚠️  ~/gdrive not mounted — animal tab color/title unavailable this session (reopen the tab once gdrive is up)." >&2
       command -v animal >/dev/null 2>&1 && animal "$_lc1"
-      local _an="$_lc1"; shift
+      local _an="$_lc1"; shift; export CLAUDE_ZOO_ROLE="$_an"   # role signal for the save-things skill: orc/zoo/zookeeper=ORC · a codename=animal · unset=standalone
       local _label; _label="$(command -v animal_label >/dev/null 2>&1 && animal_label "$_an")"
       [ -z "$_label" ] && _label="$_an"   # never blank — fall back to the codename
       local _df _root=""
@@ -415,7 +415,7 @@ _claude_launch() {
         set -- --settings '{"ultracode": true}' -n "$_title" "$_kick"
       elif [ "$#" -eq 0 ] && { [ "$_an" = "zoo" ] || [ "$_an" = "orc" ] || [ "$_an" = "zookeeper" ]; }; then
         # Zookeeper has no dispatch file → kick off the zookeeper skill directly.
-        local _zkick="You are the Zookeeper (Adam's Daily Architect + ORC). Run the zookeeper skill now: FIRST lead with the current time, then ASK Adam for his top of mind BEFORE presenting any plan (that first question is non-negotiable). Then follow the skill — read pulse.md + session_log.md + coaching_spec.md, sweep the animal dispatch beacons, refresh DASHBOARD.md, and lay out the energy-aware day."
+        local _zkick="You are the Zookeeper (Adam's Daily Architect + ORC). Run the zoo-keeper skill now: FIRST lead with the current time, then ASK Adam for his top of mind BEFORE presenting any plan (that first question is non-negotiable). Then follow the skill — read pulse.md + session_log.md + coaching_spec.md, sweep the animal dispatch beacons, refresh DASHBOARD.md, and lay out the energy-aware day."
         set -- --settings '{"ultracode": true}' -n "$_title" "$_zkick"
       else
         set -- --settings '{"ultracode": true}' -n "$_title" "$@"
@@ -424,6 +424,7 @@ _claude_launch() {
   esac
   # Bare para/ccoding (no animal) in a VSCode terminal → clear any stale animal
   # title/color so a non-animal window isn't left themed from a prior session.
+  [ "$_animal_matched" -eq 0 ] && unset CLAUDE_ZOO_ROLE   # bare para/ccoding = STANDALONE (no ORC/animal role → save-things won't touch the animals' queues)
   [ "$_animal_matched" -eq 0 ] && command -v _vscode_animal_title >/dev/null 2>&1 && _vscode_animal_title reset
   unset CLAUDE_CODE_EFFORT_LEVEL CLAUDE_EFFORT
   CLAUDE_CODE_VERSION_OVERRIDE=latest \
