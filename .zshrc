@@ -516,3 +516,19 @@ fi
 
 # Force clean exit code
 true
+
+# zoo-peek: LOOK inside a Zoo animal's session without resuming/forking it. Exists because once the
+# ORC drives an animal via Agent Home, `ccoding <codename>` can't re-enter it (banner → failed local
+# resume → loop). Taking the session is fine; being locked out of reading it isn't.
+#   zoo-peek                 # crew + session states
+#   zoo-peek purple-peacock  # peek inside
+#   zoo-peek <name> --url    # just the Agent Home URL + resume command
+zoo-peek() {
+  local _z
+  for _z in "${CLAUDE_PARA_DIR:-/nonexistent}/02_areas/ai_workflows/zoo-peek.sh" \
+            "$HOME/gdrive/claude/02_areas/ai_workflows/zoo-peek.sh" \
+            "$HOME/Library/CloudStorage/GoogleDrive-adambiglow@meta.com/My Drive/claude/02_areas/ai_workflows/zoo-peek.sh"; do
+    [ -f "$_z" ] && { bash "$_z" "$@"; return $?; }
+  done
+  echo "zoo-peek.sh not found" >&2; return 1
+}
