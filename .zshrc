@@ -532,3 +532,7 @@ zoo-peek() {
   done
   echo "zoo-peek.sh not found" >&2; return 1
 }
+# Adam spells it "peak" — both work. (2026-08-05)
+alias zoo-peak='zoo-peek'
+alias zoopeek='zoo-peek'
+alias zoopeak='zoo-peek'
