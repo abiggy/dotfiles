@@ -13,6 +13,11 @@ export VISUAL="$MYVIM"
 export DOTFILES="$HOME/dotfiles"
 export PYTHONSTARTUP=~/.pystartup
 
+# VSCode's shell integration injects FORCE_HYPERLINK=0, which makes Node CLIs
+# (Claude Code et al.) print "label (https://...)" instead of emitting clickable
+# OSC 8 hyperlinks. Force it back on so links render as underlined labels.
+export FORCE_HYPERLINK=1
+
 # --- PATH Configuration ---
 
 # 1. Start with system paths
@@ -26,13 +31,13 @@ if [ -d "$HOME/adb-fastboot/platform-tools" ]; then
     export PATH="$HOME/adb-fastboot/platform-tools:$PATH"
 fi
 
-# 4. Local Node Modules 
+# 4. Local Node Modules
 export PATH=$PATH:./node_modules/.bin
 
 # --- NVM Lazy Loading (Zsh Optimized) ---
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/nvm.sh" ] && [ -z "$+functions[__init_nvm]" ]; then
-    declare -a __node_commands=(nvm node npm npx yarn) 
+    declare -a __node_commands=(nvm node npm npx yarn)
     function __init_nvm() {
         for i in "${__node_commands[@]}"; do unalias $i; done
         . "$NVM_DIR"/nvm.sh
